@@ -28,7 +28,9 @@
     </v-chip>
   </div>
   <div class="list-meal-card--list pt-4">
-    <v-sheet
+    <!-- Pour maintenir la cohérence visuelle et achever l'intégration du composant "MealDetailCard" dans le but de rendre le contenu dynamique et harmonieux avec les autres éléments -->
+    <MealDetailCard />
+    <!-- <v-sheet
       class="list-meal-card-list--sheet my-2"
       v-for="(i, e) in tempData"
       :key="e"
@@ -65,14 +67,16 @@
           </v-col>
         </v-row>
       </v-container>
-    </v-sheet>
+    </v-sheet> -->
   </div>
 </template>
 
 <script lang="ts">
+import MealDetailCard from "@/components/infoCard/MealDetailCard.vue";
+
 export default {
   name: "listMealCard",
-  components: {},
+  components: { MealDetailCard },
 
   data() {
     return {
