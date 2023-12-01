@@ -67,4 +67,4 @@ texte :
 #29252c
 
 Liens figma :
-https://www.figma.com/file/UoXyI0uTecOKgvqz88sqi5/Eat?node-id=39%3A325&mode=dev
+https://www.figma.com/file/UoXyI0uTecOKgvqz88sqi5/Eat?node-id=39%3A325
