@@ -6,6 +6,7 @@
       label="Quantité en gramme"
       suffix="g"
       @keyup.enter="convertPrice()"
+      @blur="convertPrice()"
     ></v-text-field>
     <v-btn
       class="mr-2"
@@ -69,15 +70,13 @@
 </template>
 
 <script lang="ts">
-import { tSThisType } from "@babel/types";
-
 export default {
   name: "listMeatCard",
   components: {},
 
   data() {
     return {
-      quantityVariable: 0,
+      quantityVariable: 100,
       chipsDetail: [
         {
           icon: "mdi-fire",
