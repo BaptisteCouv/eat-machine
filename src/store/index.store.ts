@@ -2,19 +2,19 @@ import { createStore } from "vuex";
 
 export default createStore({
   state: {
-    showAddMeatListModal: false,
+    showAddMealListModal: false,
   },
   mutations: {
-    managementListMeatModal(state, isOpen) {
-      state.showAddMeatListModal = isOpen;
+    managementListMealModal(state, isOpen) {
+      state.showAddMealListModal = isOpen;
     },
   },
   actions: {
-    managementListMeatModal({ commit }, params) {
-      commit("managementListMeatModal", params);
+    managementListMealModal({ commit }, params) {
+      commit("managementListMealModal", params);
     },
   },
   getters: {
-    isManagementListMeatModal: (state) => state.showAddMeatListModal,
+    isManagementListMealModal: (state) => state.showAddMealListModal,
   },
 });

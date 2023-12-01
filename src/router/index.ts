@@ -15,9 +15,9 @@ const routes = [
         component: () => import(/* webpackChunkName: "home" */ '@/views/Home.vue'),
       },
       {
-        path: '/listMeat',
-        name: 'listMeat',
-        component: () => import('@/views/ListMeat.vue')
+        path: '/listMeal',
+        name: 'listMeal',
+        component: () => import('@/views/ListMeal.vue')
       },
     ],
   },

@@ -1,13 +1,13 @@
 <template>
   <v-dialog
-    v-model="isManagementListMeatModal"
+    v-model="isManagementListMealModal"
     fullscreen
     :scrim="false"
     transition="dialog-bottom-transition"
   >
     <v-card>
       <v-toolbar dark color="primary">
-        <v-btn icon dark @click="closeListMeatModal()">
+        <v-btn icon dark @click="closeListMealModal()">
           <v-icon>mdi-chevron-left</v-icon>
         </v-btn>
         <v-toolbar-title>Dans le cul</v-toolbar-title>
@@ -99,7 +99,7 @@
               variant="flat"
               class="btn-cancel px-6 mr-3"
               rounded="xl"
-              @click="closeListMeatModal()"
+              @click="closeListMealModal()"
             >
               Annuler
             </v-btn>
@@ -108,7 +108,7 @@
               color="primary"
               class="btn-add px-12"
               rounded="xl"
-              @click="addMeatToList()"
+              @click="addMealToList()"
             >
               Ajouter
             </v-btn>
@@ -124,7 +124,7 @@ import { mapGetters, mapActions } from "vuex";
 import DefaultTitle from "@/components/default/DefaultTitle.vue";
 
 export default {
-  name: "addMeatListModal",
+  name: "addMealListModal",
 
   components: {
     DefaultTitle,
@@ -147,12 +147,12 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["isManagementListMeatModal"]),
+    ...mapGetters(["isManagementListMealModal"]),
   },
   methods: {
-    ...mapActions(["managementListMeatModal"]),
-    closeListMeatModal() {
-      this.managementListMeatModal(false);
+    ...mapActions(["managementListMealModal"]),
+    closeListMealModal() {
+      this.managementListMealModal(false);
       this.formData = {
         isUnit: false,
         name: "",
@@ -163,8 +163,8 @@ export default {
         price: "",
       };
     },
-    addMeatToList() {
-      this.closeListMeatModal();
+    addMealToList() {
+      this.closeListMealModal();
     },
   },
 };

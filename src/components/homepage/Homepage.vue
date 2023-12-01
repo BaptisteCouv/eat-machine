@@ -11,7 +11,7 @@
               width="100%"
               rounded="lg"
               color="primary"
-              @click="goToListMeat()"
+              @click="goToListMeal()"
             >
               Mes aliments
             </v-btn>
@@ -32,25 +32,25 @@
     </v-row>
     <v-row>
       <v-col cols="12">
-        <MeatCard />
+        <MealCard />
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script lang="ts">
-import MeatCard from "@/components/infoCard/MeatCard.vue";
+import MealCard from "@/components/infoCard/MealCard.vue";
 import DefaultTitle from "@/components/default/DefaultTitle.vue";
 
 export default {
   name: "Homepage",
   components: {
-    MeatCard,
+    MealCard,
     DefaultTitle,
   },
   methods: {
-    goToListMeat() {
-      this.$router.push("/listMeat");
+    goToListMeal() {
+      this.$router.push("/listMeal");
     },
   },
 };

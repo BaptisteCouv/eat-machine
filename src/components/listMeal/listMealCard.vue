@@ -1,5 +1,5 @@
 <template>
-  <div class="list-meat-card-unit d-flex">
+  <div class="list-meal-card-unit d-flex">
     <v-text-field
       v-model="quantityVariable"
       class="mr-4 test"
@@ -16,7 +16,7 @@
       @click="convertPrice()"
     ></v-btn>
   </div>
-  <div class="list-meat-card--chips">
+  <div class="list-meal-card--chips">
     <v-chip
       v-for="(i, e) in chipsDetail"
       :key="e"
@@ -27,9 +27,9 @@
       {{ i.name }}
     </v-chip>
   </div>
-  <div class="list-meat-card--list pt-4">
+  <div class="list-meal-card--list pt-4">
     <v-sheet
-      class="list-meat-card-list--sheet my-2"
+      class="list-meal-card-list--sheet my-2"
       v-for="(i, e) in tempData"
       :key="e"
     >
@@ -37,14 +37,14 @@
         <v-row>
           <v-col cols="2">
             <div
-              class="list-meat-card-list-icon d-flex align-center justify-center"
+              class="list-meal-card-list-icon d-flex align-center justify-center"
             >
               <v-icon>mdi-star</v-icon>
             </div>
           </v-col>
           <v-col cols="10" class="d-flex align-center">
             <v-row class="pb-2">
-              <div class="list-meat-card-list-title">{{ i.name }}</div>
+              <div class="list-meal-card-list-title">{{ i.name }}</div>
             </v-row>
           </v-col>
         </v-row>
@@ -57,7 +57,7 @@
                 size="small"
                 :append-icon="y.icon"
                 :color="y.color"
-                class="list-meat-card-list-title mb-1 mr-1"
+                class="list-meal-card-list-title mb-1 mr-1"
               >
                 {{ y.quantity }} <span class="ml-1">{{ y.unit }}</span>
               </v-chip>
@@ -71,7 +71,7 @@
 
 <script lang="ts">
 export default {
-  name: "listMeatCard",
+  name: "listMealCard",
   components: {},
 
   data() {
@@ -341,16 +341,16 @@ export default {
 </script>
 
 <style lang="scss">
-.list-meat-card--list {
-  .list-meat-card-list--sheet {
+.list-meal-card--list {
+  .list-meal-card-list--sheet {
     border-radius: 8px;
     background-color: #f6f6f6;
   }
 }
-.list-meat-card-list-icon {
+.list-meal-card-list-icon {
   height: 100%;
 }
-.list-meat-card-list-title {
+.list-meal-card-list-title {
   font-size: 16px;
   font-weight: 600;
   line-height: normal;

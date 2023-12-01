@@ -1,5 +1,5 @@
 <template>
-  <addMeatListModal />
+  <addMealListModal />
 
   <v-container>
     <v-row>
@@ -13,7 +13,7 @@
               width="100%"
               rounded="lg"
               color="primary"
-              @click="managementListMeatModal(true)"
+              @click="managementListMealModal(true)"
             >
               Aliments
             </v-btn>
@@ -24,7 +24,7 @@
     <v-row>
       <v-col cols="12">
         <DefaultTitle title="Liste des aliments" />
-        <ListMeatCard />
+        <ListMealCard />
       </v-col>
     </v-row>
   </v-container>
@@ -32,22 +32,22 @@
 
 <script lang="ts">
 import DefaultTitle from "@/components/default/DefaultTitle.vue";
-import ListMeatCard from "@/components/listMeat/listMeatCard.vue";
-import addMeatListModal from "@/components/listMeat/addMeatListModal.vue";
+import ListMealCard from "@/components/listMeal/listMealCard.vue";
+import addMealListModal from "@/components/listMeal/addMealListModal.vue";
 import { mapActions } from "vuex";
 
 export default {
-  name: "listMeatHome",
+  name: "listMealHome",
   components: {
     DefaultTitle,
-    ListMeatCard,
-    addMeatListModal,
+    ListMealCard,
+    addMealListModal,
   },
   methods: {
-    ...mapActions(["managementListMeatModal"]),
+    ...mapActions(["managementListMealModal"]),
 
     openModalWithParam(isOpen: boolean) {
-      this.managementListMeatModal(isOpen);
+      this.managementListMealModal(isOpen);
     },
   },
 };
