@@ -17,5 +17,5 @@ texte :
 Liens figma :
 https://www.figma.com/file/UoXyI0uTecOKgvqz88sqi5/Eat?node-id=39%3A325
 
-permet de simuler en local pour téléphone
+permet de simuler en local pour téléphone :
 npm run dev -- --host IPV4
