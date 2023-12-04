@@ -1,7 +1,7 @@
 <template>
-  <listMealHome />
+  <listFoodHome />
 </template>
 
 <script lang="ts" setup>
-import listMealHome from '@/components/listMeal/listMealHome.vue'
+import listFoodHome from '@/components/listFood/listFoodHome.vue'
 </script>

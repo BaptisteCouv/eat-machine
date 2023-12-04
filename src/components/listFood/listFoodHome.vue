@@ -1,5 +1,5 @@
 <template>
-  <addMealListModal />
+  <addFoodListModal />
 
   <v-container>
     <v-row>
@@ -32,16 +32,16 @@
 
 <script lang="ts">
 import DefaultTitle from "@/components/default/DefaultTitle.vue";
-import ListMealCard from "@/components/listMeal/listMealCard.vue";
-import addMealListModal from "@/components/listMeal/addMealListModal.vue";
+import ListMealCard from "@/components/listFood/listFoodCard.vue";
+import addFoodListModal from "@/components/listFood/addFoodListModal.vue";
 import { mapActions } from "vuex";
 
 export default {
-  name: "listMealHome",
+  name: "listFoodHome",
   components: {
     DefaultTitle,
     ListMealCard,
-    addMealListModal,
+    addFoodListModal,
   },
   methods: {
     ...mapActions(["managementListMealModal"]),

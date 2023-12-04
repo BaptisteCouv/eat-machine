@@ -29,7 +29,7 @@
   </div>
   <div class="list-meal-card--list pt-4">
     <!-- Pour maintenir la cohérence visuelle et achever l'intégration du composant "MealDetailCard" dans le but de rendre le contenu dynamique et harmonieux avec les autres éléments -->
-    <MealDetailCard />
+    <MealDetailCard :allFoods="tempData" />
     <!-- <v-sheet
       class="list-meal-card-list--sheet my-2"
       v-for="(i, e) in tempData"
@@ -75,7 +75,7 @@
 import MealDetailCard from "@/components/infoCard/MealDetailCard.vue";
 
 export default {
-  name: "listMealCard",
+  name: "listFoodCard",
   components: { MealDetailCard },
 
   data() {
@@ -112,6 +112,7 @@ export default {
         {
           icon: "mdi-fire",
           name: "Amandes",
+          price: 11.98,
           detail: [
             {
               icon: "mdi-fire",
@@ -141,18 +142,12 @@ export default {
               unit: "g",
               color: "orange",
             },
-            {
-              icon: "mdi-currency-eur",
-              name: "Prix",
-              quantity: 11.98,
-              unit: "",
-              color: "grey",
-            },
           ],
         },
         {
           icon: "mdi-food-drumstick-outline",
           name: "Poulet",
+          price: 1.8,
           detail: [
             {
               icon: "mdi-fire",
@@ -182,18 +177,12 @@ export default {
               unit: "g",
               color: "orange",
             },
-            {
-              icon: "mdi-currency-eur",
-              name: "Prix",
-              quantity: 1.4,
-              unit: "",
-              color: "grey",
-            },
           ],
         },
         {
           icon: "mdi-barley",
           name: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+          price: 11.98,
           detail: [
             {
               icon: "mdi-fire",
@@ -222,19 +211,13 @@ export default {
               quantity: 32,
               unit: "g",
               color: "orange",
-            },
-            {
-              icon: "mdi-currency-eur",
-              name: "Prix",
-              quantity: 3.4,
-              unit: "",
-              color: "grey",
             },
           ],
         },
         {
           icon: "mdi-lightning-bolt-outline",
           name: "Pancakes",
+          price: 11.98,
           detail: [
             {
               icon: "mdi-fire",
@@ -263,19 +246,13 @@ export default {
               quantity: 32,
               unit: "g",
               color: "orange",
-            },
-            {
-              icon: "mdi-currency-eur",
-              name: "Prix",
-              quantity: 3.4,
-              unit: "",
-              color: "grey",
             },
           ],
         },
         {
           icon: "mdi-currency-eur",
           name: "Pute",
+          price: 11.98,
           detail: [
             {
               icon: "mdi-fire",
@@ -304,13 +281,6 @@ export default {
               quantity: 32,
               unit: "g",
               color: "orange",
-            },
-            {
-              icon: "mdi-currency-eur",
-              name: "Prix",
-              quantity: 3.4,
-              unit: "",
-              color: "grey",
             },
           ],
         },

@@ -1,36 +1,32 @@
 <template>
-  <v-container class="meal-detail--card pb-0" v-for="i in 3" :key="i">
+  <v-container class="meal-detail--card pb-0" v-for="i in allFoods" :key="i">
     <v-row class="meal-detail-card--price">
       <v-col cols="12" class="pr-0 pb-0">
         <div class="d-flex justify-end">
-          <v-chip color="primary" variant="flat"> 2,50 € </v-chip>
+          <v-chip color="primary" variant="flat"> {{ i.price }} € </v-chip>
         </div>
       </v-col>
     </v-row>
     <v-row class="meal-detail-card--header">
       <v-col cols="12" class="d-flex align-center flex-column pt-0">
         <div class="meal-detail-card-header--icon">
-          <v-icon>mdi-flower-outline</v-icon>
+          <v-icon>{{ i.icon }}</v-icon>
         </div>
-        <div class="meal-detail-card-header--title">Pancakes</div>
+        <div class="meal-detail-card-header--title">{{ i.name }}</div>
       </v-col>
     </v-row>
     <v-row class="meal-detail-card--body">
-      <v-col cols="3" class="d-flex align-center flex-column">
-        <div class="meal-detail-card-body--title">Calories</div>
-        <div class="meal-detail-card-body--total">53</div>
-      </v-col>
-      <v-col cols="3" class="d-flex align-center flex-column">
-        <div class="meal-detail-card-body--title">Protéines</div>
-        <div class="meal-detail-card-body--total">63</div>
-      </v-col>
-      <v-col cols="3" class="d-flex align-center flex-column">
-        <div class="meal-detail-card-body--title">Glucides</div>
-        <div class="meal-detail-card-body--total">176</div>
-      </v-col>
-      <v-col cols="3" class="d-flex align-center flex-column">
-        <div class="meal-detail-card-body--title">Lipides</div>
-        <div class="meal-detail-card-body--total">17</div>
+      <v-col
+        cols="3"
+        class="d-flex align-center flex-column"
+        v-for="y in i.detail"
+        :key="y"
+      >
+        <div class="meal-detail-card-body--title">{{ y.name }}</div>
+        <div class="meal-detail-card-body--total">
+          {{ y.quantity }}
+        </div>
+        <div class="meal-detail-card-body-total--unit">{{ y.unit }}</div>
       </v-col>
     </v-row>
     <v-divider class="mt-4"></v-divider>
@@ -46,6 +42,10 @@ export default {
       myTitle: "Oui baguetee",
     };
   },
+
+  props: {
+    allFoods: {},
+  },
 };
 </script>
 <style lang="scss">
@@ -58,8 +58,9 @@ export default {
     .meal-detail-card-header--title {
       color: #36485e;
       text-transform: uppercase;
-      font-size: 14px;
-      font-weight: 200;
+      font-size: 16px;
+      font-weight: 300;
+      text-align: center;
     }
   }
   .meal-detail-card--body {
@@ -74,6 +75,12 @@ export default {
       font-size: 25px;
       font-weight: 700;
       line-height: 25px;
+    }
+    .meal-detail-card-body-total--unit {
+      color: #36485e;
+      font-size: 10px;
+      font-weight: 300;
+      line-height: 7px;
     }
   }
 }

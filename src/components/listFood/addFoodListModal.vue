@@ -124,7 +124,7 @@ import { mapGetters, mapActions } from "vuex";
 import DefaultTitle from "@/components/default/DefaultTitle.vue";
 
 export default {
-  name: "addMealListModal",
+  name: "addFoodListModal",
 
   components: {
     DefaultTitle,

@@ -50,7 +50,7 @@ export default {
   },
   methods: {
     goToListMeal() {
-      this.$router.push("/listMeal");
+      this.$router.push("/listFood");
     },
   },
 };
