@@ -1,31 +1,33 @@
 <template>
+  <AddMealListModal />
+
   <v-container>
     <v-row>
       <v-col cols="12">
-        <DefaultTitle title="Gestion" />
+        <DefaultTitle title="Ajouter" />
         <v-row>
           <v-col cols="6">
             <v-btn
               class="gestion-btn"
-              append-icon="mdi-format-list-bulleted"
+              append-icon="mdi-plus"
               width="100%"
               rounded="lg"
               color="primary"
-              @click="goToListFood()"
+              @click="managementListMealModal(true)"
             >
-              Mes aliments
+              Catégories
             </v-btn>
           </v-col>
           <v-col cols="6">
             <v-btn
               class="gestion-btn"
-              append-icon="mdi-food-outline"
+              append-icon="mdi-plus"
               width="100%"
               rounded="lg"
               color="primary"
-              @click="goToListMeal()"
+              @click="managementListMealModal(true)"
             >
-              Mes repas
+              Repas
             </v-btn>
           </v-col>
         </v-row>
@@ -33,32 +35,37 @@
     </v-row>
     <v-row>
       <v-col cols="12">
-        <MealCard />
+        <DefaultTitle title="Liste des catégories" />
+        <listMealCard />
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script lang="ts">
-import MealCard from "@/components/infoCard/MealCard.vue";
 import DefaultTitle from "@/components/default/DefaultTitle.vue";
+import listMealCard from "@/components/listMeal/listMealCard.vue";
+import AddMealListModal from "@/components/listMeal/addMealListModal.vue";
+
+import { mapActions } from "vuex";
 
 export default {
-  name: "Homepage",
+  name: "listMealHome",
   components: {
-    MealCard,
     DefaultTitle,
+    listMealCard,
+    AddMealListModal,
   },
   methods: {
-    goToListFood() {
-      this.$router.push("/listFood");
+    ...mapActions(["managementListMealModal"]),
+
+    openModalWithParam(isOpen: boolean) {
+      this.managementListMealModal(isOpen);
     },
-    goToListMeal() {
-      this.$router.push("/listMeal");
-    }
   },
 };
 </script>
+
 <style lang="scss">
 .gestion-btn {
   height: 48px !important;

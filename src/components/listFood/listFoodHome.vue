@@ -13,7 +13,7 @@
               width="100%"
               rounded="lg"
               color="primary"
-              @click="managementListMealModal(true)"
+              @click="managementListFoodModal(true)"
             >
               Aliments
             </v-btn>
@@ -44,10 +44,10 @@ export default {
     addFoodListModal,
   },
   methods: {
-    ...mapActions(["managementListMealModal"]),
+    ...mapActions(["managementListFoodModal"]),
 
     openModalWithParam(isOpen: boolean) {
-      this.managementListMealModal(isOpen);
+      this.managementListFoodModal(isOpen);
     },
   },
 };

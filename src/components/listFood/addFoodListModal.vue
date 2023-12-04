@@ -1,13 +1,13 @@
 <template>
   <v-dialog
-    v-model="isManagementListMealModal"
+    v-model="isManagementListFoodModal"
     fullscreen
     :scrim="false"
     transition="dialog-bottom-transition"
   >
     <v-card>
       <v-toolbar dark color="primary">
-        <v-btn icon dark @click="closeListMealModal()">
+        <v-btn icon dark @click="closeListFoodModal()">
           <v-icon>mdi-chevron-left</v-icon>
         </v-btn>
         <v-toolbar-title>Dans le cul</v-toolbar-title>
@@ -99,7 +99,7 @@
               variant="flat"
               class="btn-cancel px-6 mr-3"
               rounded="xl"
-              @click="closeListMealModal()"
+              @click="closeListFoodModal()"
             >
               Annuler
             </v-btn>
@@ -108,7 +108,7 @@
               color="primary"
               class="btn-add px-12"
               rounded="xl"
-              @click="addMealToList()"
+              @click="addFoodToList()"
             >
               Ajouter
             </v-btn>
@@ -147,12 +147,12 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["isManagementListMealModal"]),
+    ...mapGetters(["isManagementListFoodModal"]),
   },
   methods: {
-    ...mapActions(["managementListMealModal"]),
-    closeListMealModal() {
-      this.managementListMealModal(false);
+    ...mapActions(["managementListFoodModal"]),
+    closeListFoodModal() {
+      this.managementListFoodModal(false);
       this.formData = {
         isUnit: false,
         name: "",
@@ -163,8 +163,8 @@ export default {
         price: "",
       };
     },
-    addMealToList() {
-      this.closeListMealModal();
+    addFoodToList() {
+      this.closeListFoodModal();
     },
   },
 };
