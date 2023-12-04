@@ -37,10 +37,25 @@
             </div>
           </v-col>
         </v-row>
+        <v-row class="meal-card-body--detail">
+          <v-col
+            cols="12"
+            class="d-flex justify-center"
+            @click="displayDetail()"
+          >
+            Détails
+            <v-icon v-if="isOpen">mdi-chevron-up</v-icon>
+            <v-icon v-else>mdi-chevron-down</v-icon>
+          </v-col>
+        </v-row>
       </v-container>
     </div>
   </v-sheet>
-  <MealDetailCard />
+  <v-expand-transition>
+    <div v-if="isOpen">
+      <MealDetailCard />
+    </div>
+  </v-expand-transition>
 </template>
 
 <script lang="ts">
@@ -57,11 +72,27 @@ export default {
   data() {
     return {
       myTitle: "Oui baguetee",
+      isOpen: false,
     };
+  },
+  methods: {
+    displayDetail() {
+      this.isOpen = !this.isOpen;
+    },
   },
 };
 </script>
 <style lang="scss">
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+
 .meal-card {
   .meal-card--body {
     background-color: #f6f6f6;
@@ -106,6 +137,13 @@ export default {
         font-weight: 900;
         line-height: 36px;
       }
+    }
+    .meal-card-body--detail {
+      color: #333146;
+      text-transform: uppercase;
+      font-size: 14px;
+      font-weight: 200;
+      line-height: normal;
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <v-container class="meal-detail--card" v-for="i in 3" :key="i">
+  <v-container class="meal-detail--card pb-0" v-for="i in 3" :key="i">
     <v-row class="meal-detail-card--price">
       <v-col cols="12" class="pr-0 pb-0">
         <div class="d-flex justify-end">
@@ -33,6 +33,7 @@
         <div class="meal-detail-card-body--total">17</div>
       </v-col>
     </v-row>
+    <v-divider class="mt-4"></v-divider>
   </v-container>
 </template>
 
