@@ -16,7 +16,7 @@
       @click="convertPrice()"
     ></v-btn>
   </div>
-  <div class="list-meal-card--chips">
+  <!-- <div class="list-meal-card--chips">
     <v-chip
       v-for="(i, e) in chipsDetail"
       :key="e"
@@ -26,7 +26,7 @@
     >
       {{ i.name }}
     </v-chip>
-  </div>
+  </div> -->
   <div class="list-meal-card--list pt-4">
     <!-- Pour maintenir la cohérence visuelle et achever l'intégration du composant "MealDetailCard" dans le but de rendre le contenu dynamique et harmonieux avec les autres éléments -->
     <MealDetailCard :allFoods="tempData" />
@@ -73,6 +73,7 @@
 
 <script lang="ts">
 import MealDetailCard from "@/components/infoCard/MealDetailCard.vue";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "listFoodCard",
@@ -108,200 +109,38 @@ export default {
           color: "grey",
         },
       ],
-      tempData: [
-        {
-          icon: "mdi-fire",
-          name: "Amandes",
-          price: 11.98,
-          detail: [
-            {
-              icon: "mdi-fire",
-              name: "Calories",
-              quantity: 619,
-              unit: "kcal",
-              color: "red",
-            },
-            {
-              icon: "mdi-food-drumstick-outline",
-              name: "Protéines",
-              quantity: 24,
-              unit: "g",
-              color: "blue",
-            },
-            {
-              icon: "mdi-barley",
-              name: "Glucides",
-              quantity: 5.7,
-              unit: "g",
-              color: "green",
-            },
-            {
-              icon: "mdi-lightning-bolt-outline",
-              name: "Lipides",
-              quantity: 54,
-              unit: "g",
-              color: "orange",
-            },
-          ],
-        },
-        {
-          icon: "mdi-food-drumstick-outline",
-          name: "Poulet",
-          price: 1.8,
-          detail: [
-            {
-              icon: "mdi-fire",
-              name: "Calories",
-              quantity: 1203,
-              unit: "kcal",
-              color: "red",
-            },
-            {
-              icon: "mdi-food-drumstick-outline",
-              name: "Protéines",
-              quantity: 45,
-              unit: "g",
-              color: "blue",
-            },
-            {
-              icon: "mdi-barley",
-              name: "Glucides",
-              quantity: 12,
-              unit: "g",
-              color: "green",
-            },
-            {
-              icon: "mdi-lightning-bolt-outline",
-              name: "Lipides",
-              quantity: 45,
-              unit: "g",
-              color: "orange",
-            },
-          ],
-        },
-        {
-          icon: "mdi-barley",
-          name: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-          price: 11.98,
-          detail: [
-            {
-              icon: "mdi-fire",
-              name: "Calories",
-              quantity: 2512,
-              unit: "kcal",
-              color: "red",
-            },
-            {
-              icon: "mdi-food-drumstick-outline",
-              name: "Protéines",
-              quantity: 80,
-              unit: "g",
-              color: "blue",
-            },
-            {
-              icon: "mdi-barley",
-              name: "Glucides",
-              quantity: 120,
-              unit: "g",
-              color: "green",
-            },
-            {
-              icon: "mdi-lightning-bolt-outline",
-              name: "Lipides",
-              quantity: 32,
-              unit: "g",
-              color: "orange",
-            },
-          ],
-        },
-        {
-          icon: "mdi-lightning-bolt-outline",
-          name: "Pancakes",
-          price: 11.98,
-          detail: [
-            {
-              icon: "mdi-fire",
-              name: "Calories",
-              quantity: 2512,
-              unit: "kcal",
-              color: "red",
-            },
-            {
-              icon: "mdi-food-drumstick-outline",
-              name: "Protéines",
-              quantity: 80,
-              unit: "g",
-              color: "blue",
-            },
-            {
-              icon: "mdi-barley",
-              name: "Glucides",
-              quantity: 120,
-              unit: "g",
-              color: "green",
-            },
-            {
-              icon: "mdi-lightning-bolt-outline",
-              name: "Lipides",
-              quantity: 32,
-              unit: "g",
-              color: "orange",
-            },
-          ],
-        },
-        {
-          icon: "mdi-currency-eur",
-          name: "Pute",
-          price: 11.98,
-          detail: [
-            {
-              icon: "mdi-fire",
-              name: "Calories",
-              quantity: 2512,
-              unit: "kcal",
-              color: "red",
-            },
-            {
-              icon: "mdi-food-drumstick-outline",
-              name: "Protéines",
-              quantity: 80,
-              unit: "g",
-              color: "blue",
-            },
-            {
-              icon: "mdi-barley",
-              name: "Glucides",
-              quantity: 120,
-              unit: "g",
-              color: "green",
-            },
-            {
-              icon: "mdi-lightning-bolt-outline",
-              name: "Lipides",
-              quantity: 32,
-              unit: "g",
-              color: "orange",
-            },
-          ],
-        },
-      ],
+      tempData: [],
       originalTempData: [],
     };
   },
-  mounted() {
-    this.originalTempData = JSON.parse(JSON.stringify(this.tempData));
+  created() {
+    this.getAllListFoods();
+  },
+  computed: {
+    ...mapGetters(["getListAllFoods"]),
   },
   methods: {
+    ...mapActions(["getAllListFoodsNutritionals"]),
+
+    getAllListFoods() {
+      this.getAllListFoodsNutritionals().then(() => {
+        this.tempData = this.getListAllFoods
+        this.originalTempData = JSON.parse(
+          JSON.stringify(this.getListAllFoods)
+        );
+      });
+    },
     convertPrice() {
       this.tempData = JSON.parse(JSON.stringify(this.originalTempData));
-      this.tempData.forEach((element) => {
-        element.detail.forEach((detailElement) => {
+      
+      this.tempData.forEach((element: any) => {
+        element.detail.forEach((detailElement: any) => {
           // Rajouter une condition pour savoir si il est a l'unité ou non
           let a = (this.quantityVariable / 100) * detailElement.quantity;
           detailElement.quantity = parseFloat(a.toFixed(1));
         });
         const prixElement = element.detail.find(
-          (detailItem) => detailItem.name === "Prix"
+          (detailItem: any) => detailItem.name === "Prix"
         );
         if (prixElement) {
           const prix = prixElement.quantity;

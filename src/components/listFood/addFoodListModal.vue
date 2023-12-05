@@ -25,7 +25,7 @@
               label="Nom de l'aliment"
             ></v-text-field>
             <v-switch
-              v-model="formData.isUnit"
+              v-model="formData.unitMeasurement"
               label="Aliment à l'unité ?"
               color="primary"
             ></v-switch>
@@ -42,7 +42,7 @@
         <v-row>
           <v-col cols="6" class="pt-0">
             <v-text-field
-              v-model="formData.calorie"
+              v-model="formData.calories"
               prepend-inner-icon="mdi-fire"
               color="red"
               label="Calories"
@@ -52,7 +52,7 @@
           </v-col>
           <v-col cols="6" class="pt-0">
             <v-text-field
-              v-model="formData.proteine"
+              v-model="formData.protein"
               prepend-inner-icon="mdi-food-drumstick-outline"
               color="blue"
               label="Protéines"
@@ -64,7 +64,7 @@
         <v-row>
           <v-col cols="6" class="pt-0">
             <v-text-field
-              v-model="formData.glucide"
+              v-model="formData.carbohydrates"
               prepend-inner-icon="mdi-barley"
               color="green"
               label="Glucides"
@@ -74,7 +74,7 @@
           </v-col>
           <v-col cols="6" class="pt-0">
             <v-text-field
-              v-model="formData.lipide"
+              v-model="formData.lipid"
               prepend-inner-icon="mdi-lightning-bolt-outline"
               color="orange"
               label="Lipides"
@@ -122,6 +122,7 @@
 <script lang="ts">
 import { mapGetters, mapActions } from "vuex";
 import DefaultTitle from "@/components/default/DefaultTitle.vue";
+import { IFoodsNutritionals } from "@/models/foodsNutritionals.models";
 
 export default {
   name: "addFoodListModal",
@@ -135,37 +136,35 @@ export default {
       notifications: false,
       sound: true,
       widgets: false,
-      formData: {
-        isUnit: false,
-        name: "",
-        calorie: "",
-        proteine: "",
-        glucide: "",
-        lipide: "",
-        price: "",
-      },
+      formData: {} as IFoodsNutritionals,
     };
   },
   computed: {
     ...mapGetters(["isManagementListFoodModal"]),
   },
   methods: {
-    ...mapActions(["managementListFoodModal"]),
+    ...mapActions(["managementListFoodModal", "addNewOneFoodNutritional"]),
+
     closeListFoodModal() {
       this.managementListFoodModal(false);
       this.formData = {
-        isUnit: false,
+        unitMeasurement: false,
         name: "",
-        calorie: "",
-        proteine: "",
-        glucide: "",
-        lipide: "",
-        price: "",
+        calories: 0,
+        protein: 0,
+        lipid: 0,
+        carbohydrates: 0,
+        price: 0,
       };
     },
     addFoodToList() {
+      this.addNewOneFoodNutritional(this.formData);
       this.closeListFoodModal();
+      this.triggerParentFunction()
     },
+    triggerParentFunction() {
+      this.$emit('some-event');
+    }
   },
 };
 </script>
@@ -183,6 +182,6 @@ export default {
   color: white !important;
 }
 .btn-cancel {
-  color: #A7A7A7 !important;
+  color: #a7a7a7 !important;
 }
 </style>

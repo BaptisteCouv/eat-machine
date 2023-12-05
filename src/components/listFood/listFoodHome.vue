@@ -1,5 +1,5 @@
 <template>
-  <addFoodListModal />
+  <addFoodListModal @some-event="handleEventFromChild" />
 
   <v-container>
     <v-row>
@@ -48,6 +48,9 @@ export default {
 
     openModalWithParam(isOpen: boolean) {
       this.managementListFoodModal(isOpen);
+    },
+    handleEventFromChild() {
+      console.log("aaaaaaaa");
     },
   },
 };
