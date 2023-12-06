@@ -1,5 +1,5 @@
 <template>
-  <MealCard />
+  <MealCard :getListAllCategory="getListAllCategory" :getListAllMeals="getListAllMeals" />
 </template>
 
 <script lang="ts">
@@ -10,9 +10,15 @@ export default {
   components: {
     MealCard
   },
-
-  data() {
-    return {};
+  props: {
+    getListAllCategory: {
+      type: Array,
+      required: true,
+    },
+    getListAllMeals: {
+      type: Array,
+      required: true,
+    },
   },
 };
 </script>

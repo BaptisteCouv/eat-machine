@@ -10,7 +10,7 @@
         <v-btn icon dark @click="closeListMealModal()">
           <v-icon>mdi-chevron-left</v-icon>
         </v-btn>
-        <v-toolbar-title>Dans le cul</v-toolbar-title>
+        <v-toolbar-title>category</v-toolbar-title>
       </v-toolbar>
       <v-container>
         <v-row>
@@ -55,16 +55,10 @@
           </v-col>
           <v-col cols="12" class="pt-0">
             <v-autocomplete
+              v-model="tempCategorySelected"
               chips
               label="Sélectionner une catégories"
-              :items="[
-                'California',
-                'Colorado',
-                'Florida',
-                'Georgia',
-                'Texas',
-                'Wyoming',
-              ]"
+              :items="getNamesFromListAllCategory()"
               multiple
             ></v-autocomplete>
           </v-col>
@@ -113,26 +107,46 @@ export default {
         name: "",
         recurrence: false,
         dateSelect: null,
-        mealTime: "",
+        idCategory: [] || null,
       },
+      tempCategorySelected: [],
     };
+  },
+  props: {
+    getListAllCategory: {
+      type: Array,
+      required: true,
+    },
   },
   computed: {
     ...mapGetters(["isManagementListMealModal"]),
   },
   methods: {
-    ...mapActions(["managementListMealModal"]),
+    ...mapActions(["managementListMealModal", "addNewOneMeal"]),
     closeListMealModal() {
       this.managementListMealModal(false);
       this.formData = {
         recurrence: false,
         name: "",
         dateSelect: null,
-        mealTime: "",
+        idCategory: [],
       };
       this.textFieldDate = "";
     },
     addMealToList() {
+      if (this.formData && this.formData.idCategory) {
+        this.tempCategorySelected.forEach((element: any) => {
+          let temp = this.getListAllCategory.find(
+            (e: any) => e.name === element
+          );
+          if (temp) {
+            this.formData.idCategory.push(temp._id);
+          }
+        });
+      }
+
+      console.log(JSON.stringify(this.formData));
+      this.addNewOneMeal(this.formData);
       this.closeListMealModal();
     },
     saveDate() {
@@ -148,6 +162,9 @@ export default {
       const dateSelect = `${formattedDay}/${formattedMonth}/${year}`;
       this.textFieldDate = dateSelect;
       this.dialogVisible = false;
+    },
+    getNamesFromListAllCategory() {
+      return this.getListAllCategory.map((item: any) => item.name);
     },
   },
 };

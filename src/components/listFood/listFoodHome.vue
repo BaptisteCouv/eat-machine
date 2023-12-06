@@ -34,7 +34,8 @@
 import DefaultTitle from "@/components/default/DefaultTitle.vue";
 import ListMealCard from "@/components/listFood/listFoodCard.vue";
 import addFoodListModal from "@/components/listFood/addFoodListModal.vue";
-import { mapActions } from "vuex";
+
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "listFoodHome",

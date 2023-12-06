@@ -1,5 +1,6 @@
 <template>
-  <AddMealListModal />
+  <AddMealListModal :getListAllCategory="getListAllCategory" />
+  <AddCategoryModal @some-event="getCategory()" />
 
   <v-container>
     <v-row>
@@ -13,7 +14,7 @@
               width="100%"
               rounded="lg"
               color="primary"
-              @click="managementListMealModal(true)"
+              @click="openCategoryModal(true)"
             >
               Catégories
             </v-btn>
@@ -36,7 +37,10 @@
     <v-row>
       <v-col cols="12">
         <DefaultTitle title="Liste des catégories" />
-        <listMealCard />
+        <listMealCard
+          :getListAllCategory="getAllCategoryOrderByHour"
+          :getListAllMeals="getListAllMeals"
+        />
       </v-col>
     </v-row>
   </v-container>
@@ -46,8 +50,9 @@
 import DefaultTitle from "@/components/default/DefaultTitle.vue";
 import listMealCard from "@/components/listMeal/listMealCard.vue";
 import AddMealListModal from "@/components/listMeal/addMealListModal.vue";
+import AddCategoryModal from "@/components/listMeal/AddCategoryModal.vue";
 
-import { mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "listMealHome",
@@ -55,12 +60,54 @@ export default {
     DefaultTitle,
     listMealCard,
     AddMealListModal,
+    AddCategoryModal,
+  },
+  data() {
+    return {
+      getAllCategoryOrderByHour: [],
+    };
+  },
+  created() {
+    this.getCategory();
+  },
+  computed: {
+    ...mapGetters([
+      "getListAllCategory",
+      "getListAllMeals",
+      "isManagementCategoryModal",
+    ]),
   },
   methods: {
-    ...mapActions(["managementListMealModal"]),
+    ...mapActions([
+      "managementListMealModal",
+      "managementCategoryModal",
+      "getAllCategory",
+      "getAllMeals",
+    ]),
 
+    async getCategory() {
+      await this.getAllCategory().then(() => {
+        this.trierLesHeures(this.getListAllCategory);
+      });
+      this.getAllMeals();
+    },
     openModalWithParam(isOpen: boolean) {
       this.managementListMealModal(isOpen);
+    },
+    openCategoryModal(isOpen: boolean) {
+      this.managementCategoryModal(isOpen);
+    },
+
+    trierLesHeures(category: any) {
+
+      category.sort((a: any, b: any) => {
+        const heureA = a.mealTime;
+        const heureB = b.mealTime;
+
+        return heureA.localeCompare(heureB);
+      });
+
+      this.getAllCategoryOrderByHour = category;
     },
   },
 };

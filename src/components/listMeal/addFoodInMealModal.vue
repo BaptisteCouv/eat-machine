@@ -5,19 +5,16 @@
     :scrim="false"
     transition="dialog-bottom-transition"
   >
+    {{ listAllCategory }}
     <v-card>
       <v-toolbar dark color="primary">
         <v-btn icon dark @click="closeModal()">
           <v-icon>mdi-chevron-left</v-icon>
         </v-btn>
-        <v-toolbar-title>Dans le cul</v-toolbar-title>
+        <v-toolbar-title>add meal</v-toolbar-title>
       </v-toolbar>
       <v-container>
-        <v-row>
-          <v-col cols="12">
-            <DefaultTitle title="Nom dynamique" />
-          </v-col>
-        </v-row>
+        <DefaultTitle title="Nom dynamique" />
         <v-row>
           <v-col cols="12" class="pt-0 d-flex justify-end">
             <v-btn
@@ -95,7 +92,7 @@
 <script lang="ts">
 import DefaultTitle from "@/components/default/DefaultTitle.vue";
 
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapState } from "vuex";
 
 export default {
   name: "addFoodInMealModal",
@@ -115,8 +112,7 @@ export default {
     ...mapGetters(["isManagementFoodInMealModal"]),
   },
   methods: {
-    ...mapActions(["managementFoodInMealModal"]),
-
+    ...mapActions(["managementFoodInMealModal", "getAllCategory"]),
     closeModal() {
       this.managementFoodInMealModal(false);
       this.formData = [];

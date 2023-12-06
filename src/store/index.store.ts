@@ -1,21 +1,25 @@
 import { createStore } from "vuex";
 
-import { getAllListMeals } from "@/services/meals.services";
+import { getAllListMeals, addOneMeal } from "@/services/meals.services";
 import {
   getAllListFoodsNutritionals,
   addOneFoodNutritional,
 } from "@/services/foodsNutritionals.services";
+import { getAllListCategory, addOneCategory } from "@/services/category.services";
 
 import { IMeals } from "@/models/meals.models";
 import { IFoodsNutritionals } from "@/models/foodsNutritionals.models";
+import { ICategory } from "@/models/category.models";
 
 export default createStore({
   state: {
     showAddMealListModal: false,
     showAddFoodListModal: false,
     showAddFoodInMealModal: false,
+    showAddCategoryModal: false,
     listAllMeals: {},
     listAllFoods: {},
+    listAllCategory: {},
   },
   mutations: {
     managementListMealModal(state, isOpen) {
@@ -27,11 +31,19 @@ export default createStore({
     managementFoodInMealModal(state, isOpen) {
       state.showAddFoodInMealModal = isOpen;
     },
+    managementCategoryModal(state, isOpen) {
+      console.log(isOpen);      
+      state.showAddCategoryModal = isOpen;
+    },
+
     listAllMeals(state, listAllMeals) {
       state.listAllMeals = listAllMeals;
     },
     listAllFoods(state, listAllFoods) {
       state.listAllFoods = listAllFoods;
+    },    
+    listAllCategory(state, listAllCategory) {
+      state.listAllCategory = listAllCategory;
     },
   },
   actions: {
@@ -44,16 +56,45 @@ export default createStore({
     managementFoodInMealModal({ commit }, params) {
       commit("managementFoodInMealModal", params);
     },
+    managementCategoryModal({ commit }, params) {
+      commit("managementCategoryModal", params);
+    },
+
+    // CATEGORY --------------------------------------------------
+
+    async getAllCategory({ commit }) {
+      try {
+        const data: ICategory[] = await getAllListCategory();
+        commit("listAllCategory", data);
+      } catch (error) {
+        console.error("Erreur lors de l'ajout du contrat");
+      }
+    },
+
+    async addNewOneCategory({ commit }, category) {
+      try {        
+        await addOneCategory(category);
+      } catch (error) {
+        console.error("Erreur lors de l'ajout du aliment");
+      }
+    },
 
     // MEALS --------------------------------------------------
-    async getListAllMeals({ commit }) {
+    async getAllMeals({ commit }) {
       try {
         const data: IMeals[] = await getAllListMeals();
-        console.log(data);
 
         commit("listAllMeals", data);
       } catch (error) {
         console.error("Erreur lors de l'ajout du contrat");
+      }
+    },
+
+    async addNewOneMeal({ commit }, meal) {
+      try {        
+        await addOneMeal(meal);
+      } catch (error) {
+        console.error("Erreur lors de l'ajout du aliment");
       }
     },
 
@@ -118,7 +159,9 @@ export default createStore({
     isManagementListMealModal: (state) => state.showAddMealListModal,
     isManagementListFoodModal: (state) => state.showAddFoodListModal,
     isManagementFoodInMealModal: (state) => state.showAddFoodInMealModal,
+    isManagementCategoryModal: (state) => state.showAddCategoryModal,
     getListAllMeals: (state) => state.listAllMeals,
     getListAllFoods: (state) => state.listAllFoods,
+    getListAllCategory: (state) => state.listAllCategory,
   },
 });
