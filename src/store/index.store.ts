@@ -4,12 +4,18 @@ import { getAllListMeals, addOneMeal } from "@/services/meals.services";
 import {
   getAllListFoodsNutritionals,
   addOneFoodNutritional,
+  getOneFoodsNutritionalsByFoodBinds,
 } from "@/services/foodsNutritionals.services";
-import { getAllListCategory, addOneCategory } from "@/services/category.services";
+import {
+  getAllListCategory,
+  addOneCategory,
+} from "@/services/category.services";
+import { getAllFoodsByMeals } from "@/services/foodsBinds.services";
 
 import { IMeals } from "@/models/meals.models";
 import { IFoodsNutritionals } from "@/models/foodsNutritionals.models";
 import { ICategory } from "@/models/category.models";
+import { IFoodsBinds } from "@/models/foodsBinds.models";
 
 export default createStore({
   state: {
@@ -19,7 +25,9 @@ export default createStore({
     showAddCategoryModal: false,
     listAllMeals: {},
     listAllFoods: {},
+    oneFoodByFoodBLind: {},
     listAllCategory: {},
+    listFoodsByMeals: {},
   },
   mutations: {
     managementListMealModal(state, isOpen) {
@@ -32,7 +40,7 @@ export default createStore({
       state.showAddFoodInMealModal = isOpen;
     },
     managementCategoryModal(state, isOpen) {
-      console.log(isOpen);      
+      console.log(isOpen);
       state.showAddCategoryModal = isOpen;
     },
 
@@ -41,9 +49,15 @@ export default createStore({
     },
     listAllFoods(state, listAllFoods) {
       state.listAllFoods = listAllFoods;
-    },    
+    },
     listAllCategory(state, listAllCategory) {
       state.listAllCategory = listAllCategory;
+    },
+    listFoodsByMeals(state, listFoodsByMeals) {
+      state.listFoodsByMeals = listFoodsByMeals;
+    },
+    oneFoodByFoodBLind(state, oneFoodByFoodBLind) {
+      state.oneFoodByFoodBLind = oneFoodByFoodBLind;
     },
   },
   actions: {
@@ -60,6 +74,17 @@ export default createStore({
       commit("managementCategoryModal", params);
     },
 
+    // FOOD BIND --------------------------------------------------
+
+    async getAllFoodsByMeals({ commit }, idMeal: string) {
+      try {
+        const data: IFoodsBinds[] = await getAllFoodsByMeals(idMeal);
+        commit("listFoodsByMeals", data);
+      } catch (error) {
+        console.error("Erreur lors de l'ajout du contrat");
+      }
+    },
+
     // CATEGORY --------------------------------------------------
 
     async getAllCategory({ commit }) {
@@ -72,7 +97,7 @@ export default createStore({
     },
 
     async addNewOneCategory({ commit }, category) {
-      try {        
+      try {
         await addOneCategory(category);
       } catch (error) {
         console.error("Erreur lors de l'ajout du aliment");
@@ -91,7 +116,7 @@ export default createStore({
     },
 
     async addNewOneMeal({ commit }, meal) {
-      try {        
+      try {
         await addOneMeal(meal);
       } catch (error) {
         console.error("Erreur lors de l'ajout du aliment");
@@ -148,10 +173,19 @@ export default createStore({
     },
 
     async addNewOneFoodNutritional({ commit }, food) {
-      try {        
+      try {
         await addOneFoodNutritional(food);
       } catch (error) {
         console.error("Erreur lors de l'ajout du aliment");
+      }
+    },
+
+    async getOneFoodsNutritionalsByFoodBinds({ commit }, idMeal: string) {
+      try {
+        const data: IFoodsNutritionals[] = await getOneFoodsNutritionalsByFoodBinds(idMeal);
+        commit("oneFoodByFoodBLind", data);
+      } catch (error) {
+        console.error("Erreur lors de l'ajout du contrat");
       }
     },
   },
@@ -163,5 +197,7 @@ export default createStore({
     getListAllMeals: (state) => state.listAllMeals,
     getListAllFoods: (state) => state.listAllFoods,
     getListAllCategory: (state) => state.listAllCategory,
+    getListFoodsByMeals: (state) => state.listFoodsByMeals,
+    getoneFoodByFoodBLind: (state) => state.oneFoodByFoodBLind,
   },
 });

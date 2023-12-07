@@ -1,5 +1,5 @@
 <template>
-  <AddMealListModal :getListAllCategory="getListAllCategory" />
+  <AddMealListModal  @some-event="getCategory()" :getListAllCategory="getListAllCategory" />
   <AddCategoryModal @some-event="getCategory()" />
 
   <v-container>
@@ -16,7 +16,7 @@
               color="primary"
               @click="openCategoryModal(true)"
             >
-              Catégories
+              Repas
             </v-btn>
           </v-col>
           <v-col cols="6">
@@ -28,7 +28,7 @@
               color="primary"
               @click="managementListMealModal(true)"
             >
-              Repas
+              Plats
             </v-btn>
           </v-col>
         </v-row>
@@ -36,7 +36,7 @@
     </v-row>
     <v-row>
       <v-col cols="12">
-        <DefaultTitle title="Liste des catégories" />
+        <DefaultTitle title="Liste des repas & plats" />
         <listMealCard
           :getListAllCategory="getAllCategoryOrderByHour"
           :getListAllMeals="getListAllMeals"

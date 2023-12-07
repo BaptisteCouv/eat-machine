@@ -10,23 +10,23 @@
         <v-btn icon dark @click="closeListMealModal()">
           <v-icon>mdi-chevron-left</v-icon>
         </v-btn>
-        <v-toolbar-title>category</v-toolbar-title>
+        <v-toolbar-title>Retour</v-toolbar-title>
       </v-toolbar>
       <v-container>
         <v-row>
           <v-col cols="12">
-            <DefaultTitle title="Créer un repas" />
+            <DefaultTitle title="Ajouter un plats" />
           </v-col>
         </v-row>
         <v-row>
           <v-col cols="12" class="pb-0">
             <v-text-field
               v-model="formData.name"
-              label="Nom de l'aliment"
+              label="Nom du plat"
             ></v-text-field>
             <v-switch
               v-model="formData.recurrence"
-              label="Tous les jours ?"
+              label="Consommer tous les jours ?"
               color="primary"
             ></v-switch>
           </v-col>
@@ -57,7 +57,7 @@
             <v-autocomplete
               v-model="tempCategorySelected"
               chips
-              label="Sélectionner une catégories"
+              label="Associer à un ou des repas"
               :items="getNamesFromListAllCategory()"
               multiple
             ></v-autocomplete>
@@ -129,7 +129,7 @@ export default {
         recurrence: false,
         name: "",
         dateSelect: null,
-        idCategory: [],
+        idCategory: null,
       };
       this.textFieldDate = "";
     },
@@ -148,6 +148,7 @@ export default {
       console.log(JSON.stringify(this.formData));
       this.addNewOneMeal(this.formData);
       this.closeListMealModal();
+      this.$emit("some-event");
     },
     saveDate() {
       if (!this.formData.dateSelect) return "";

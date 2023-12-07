@@ -14,20 +14,20 @@
       </v-toolbar>
 
       <v-container>
-        <DefaultTitle title="Créer une catégorie" />
+        <DefaultTitle title="Créer un repas" />
         <v-row>
           <v-col cols="12" class="pb-0">
             <v-text-field
               v-model="FormData.name"
-              label="Nom de la catégorie"
+              label="Nom du repas"
             ></v-text-field>
-            <div>{{ formatTime(selectedHour) }} h</div>
+            <div class="title-hour">heure du repas</div>
+            <div class="hour">{{ formatTime(selectedHour) }} h</div>
             <v-slider
               v-model="selectedHour"
               :min="0"
               :max="24"
               :step="0.5"
-              ticks
               tick-size="6"
               tick-labels
             ></v-slider>
@@ -122,5 +122,20 @@ export default {
 }
 .btn-cancel {
   color: #a7a7a7 !important;
+}
+
+.title-hour {
+  text-align: center;
+  color: #36485e;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 2.8px;
+}
+.hour {
+  text-align: center;
+  color: #36485e;
+  font-size: 32px;
+  font-weight: 400;
+  letter-spacing: 6.4px;
 }
 </style>

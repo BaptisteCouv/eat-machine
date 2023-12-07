@@ -5,7 +5,6 @@
     :scrim="false"
     transition="dialog-bottom-transition"
   >
-    {{ listAllCategory }}
     <v-card>
       <v-toolbar dark color="primary">
         <v-btn icon dark @click="closeModal()">
@@ -29,7 +28,14 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="12" class="pb-0" v-for="i in formData" :key="i">
+          {{ getListFoodsByMeals }}
+          <v-col
+            cols="12"
+            class="pb-0"
+            v-for="i in getListFoodsByMeals"
+            :key="i"
+          >
+          <div @click="getAllFood(i._id)">CLICK</div>
             <v-sheet class="food-card">
               <v-container>
                 <v-row>
@@ -92,7 +98,7 @@
 <script lang="ts">
 import DefaultTitle from "@/components/default/DefaultTitle.vue";
 
-import { mapGetters, mapActions, mapState } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "addFoodInMealModal",
@@ -109,10 +115,17 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["isManagementFoodInMealModal"]),
+    ...mapGetters([
+      "isManagementFoodInMealModal",
+      "getListFoodsByMeals",
+      "getoneFoodByFoodBLind",
+    ]),
   },
   methods: {
-    ...mapActions(["managementFoodInMealModal", "getAllCategory"]),
+    ...mapActions([
+      "managementFoodInMealModal",
+      "getOneFoodsNutritionalsByFoodBinds",
+    ]),
     closeModal() {
       this.managementFoodInMealModal(false);
       this.formData = [];
@@ -126,6 +139,9 @@ export default {
       } else {
         return "g";
       }
+    },
+    getAllFood(id: string) {
+      this.getOneFoodsNutritionalsByFoodBinds([id]);
     },
     addFood() {
       const myFood = {

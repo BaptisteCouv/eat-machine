@@ -5,7 +5,16 @@ export async function getAllListFoodsNutritionals() {
   return response.data;
 }
 
-export async function addOneFoodNutritional(food: object) {  
+export async function getOneFoodsNutritionalsByFoodBinds(idFoods: any) {
+  console.log(idFoods);
+
+  const response = await axios.get("/api/foodsNutritional/one", {
+    ids: idFoods,
+  });
+  return response.data;
+}
+
+export async function addOneFoodNutritional(food: object) {
   const response = await axios.post("/api/foodsNutritional", food);
   return response.data;
 }

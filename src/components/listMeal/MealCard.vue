@@ -26,7 +26,10 @@
           <v-row v-for="(meal, ii) in getListAllMeals" :key="ii">
             <template v-for="idCategory in meal.idCategory" :key="idCategory">
               <v-col cols="12" class="py-1" v-if="idCategory === category._id">
-                <div class="card mx-4 pa-3" @click="openModalWithParam(true)">
+                <div
+                  class="card mx-4 pa-3"
+                  @click="openModalWithParam(true, meal._id)"
+                >
                   <div class="card-name">{{ meal.name }}</div>
                 </div>
               </v-col>
@@ -63,9 +66,13 @@ export default {
     return {};
   },
   methods: {
-    ...mapActions(["managementFoodInMealModal"]),
+    ...mapActions(["managementFoodInMealModal", "getAllFoodsByMeals"]),
 
-    openModalWithParam(isOpen: boolean) {
+    openModalWithParam(isOpen: boolean, idMeal: string) {
+      // console.log(idMeal);
+      this.getAllFoodsByMeals(idMeal)
+
+      
       this.managementFoodInMealModal(isOpen);
     },
   },
