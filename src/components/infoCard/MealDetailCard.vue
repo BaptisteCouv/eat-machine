@@ -9,7 +9,7 @@
     </v-row>
     <v-row class="meal-detail-card--header">
       <v-col cols="12" class="d-flex align-center flex-column pt-0">
-        <div class="meal-detail-card-header--icon">
+        <div v-if="i.icon" class="meal-detail-card-header--icon">
           <v-icon>{{ i.icon }}</v-icon>
         </div>
         <div class="meal-detail-card-header--title">{{ i.name }}</div>

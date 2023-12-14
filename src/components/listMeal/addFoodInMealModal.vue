@@ -28,34 +28,25 @@
           </v-col>
         </v-row>
         <v-row>
-          {{ getListFoodsByMeals }}
           <v-col
             cols="12"
             class="pb-0"
             v-for="i in getListFoodsByMeals"
             :key="i"
           >
-          <div @click="getAllFood(i._id)">CLICK</div>
             <v-sheet class="food-card">
               <v-container>
                 <v-row>
                   <v-col cols="12" class="pb-0">
-                    <v-autocomplete
-                      v-model="i.name"
+                    <v-text-field
+                      v-model="i.foodDetails[0].name"
                       label="Sélectionner un aliment"
-                      :items="[
-                        'California',
-                        'Colorado',
-                        'Florida',
-                        'Georgia',
-                        'Texas',
-                        'Wyoming',
-                      ]"
-                    ></v-autocomplete>
+                      readonly
+                    ></v-text-field>
                   </v-col>
                   <v-col cols="8" class="pt-0">
                     <v-switch
-                      v-model="i.unit"
+                      v-model="i.foodDetails[0].unitMeasurement"
                       label="A l'unité ?"
                       color="primary"
                     ></v-switch>
@@ -64,7 +55,7 @@
                     <v-text-field
                       v-model="i.quantity"
                       label="Quantité"
-                      :suffix="isUnit()"
+                      :suffix="isUnit(i.foodDetails[0].unitMeasurement)"
                       type="number"
                     >
                     </v-text-field>
@@ -74,15 +65,50 @@
                   <v-col
                     cols="3"
                     class="d-flex align-center flex-column"
-                    v-for="y in i.detail"
-                    :key="y"
                   >
-                    <div class="meal-detail-card-body--title">{{ y.name }}</div>
+                    <div class="meal-detail-card-body--title">Calories</div>
                     <div class="meal-detail-card-body--total">
-                      {{ y.quantity }}
+                      {{ i.foodDetails[0].calories }}
                     </div>
                     <div class="meal-detail-card-body-total--unit">
-                      {{ y.unit }}
+                      kcal
+                    </div>
+                  </v-col>
+                  <v-col
+                    cols="3"
+                    class="d-flex align-center flex-column"
+                  >
+                    <div class="meal-detail-card-body--title">Protéines</div>
+                    <div class="meal-detail-card-body--total">
+                      {{ 
+                        i.foodDetails[0].protein }}
+                    </div>
+                    <div class="meal-detail-card-body-total--unit">
+                      g
+                    </div>
+                  </v-col>
+                  <v-col
+                    cols="3"
+                    class="d-flex align-center flex-column"
+                  >
+                    <div class="meal-detail-card-body--title">Glucides</div>
+                    <div class="meal-detail-card-body--total">
+                      {{ i.foodDetails[0].carbohydrates }}
+                    </div>
+                    <div class="meal-detail-card-body-total--unit">
+                      g
+                    </div>
+                  </v-col>
+                  <v-col
+                    cols="3"
+                    class="d-flex align-center flex-column"
+                  >
+                    <div class="meal-detail-card-body--title">Lipides</div>
+                    <div class="meal-detail-card-body--total">
+                      {{ i.foodDetails[0].lipid }}
+                    </div>
+                    <div class="meal-detail-card-body-total--unit">
+                      g
                     </div>
                   </v-col>
                 </v-row>
@@ -133,8 +159,8 @@ export default {
     validModal() {
       this.closeModal();
     },
-    isUnit() {
-      if (this.formData.unit) {
+    isUnit(unit: boolean) {
+      if (unit) {
         return "u";
       } else {
         return "g";

@@ -6,10 +6,10 @@ export async function getAllListFoodsNutritionals() {
 }
 
 export async function getOneFoodsNutritionalsByFoodBinds(idFoods: any) {
-  console.log(idFoods);
-
   const response = await axios.get("/api/foodsNutritional/one", {
-    ids: idFoods,
+    params: {
+      ids: idFoods,
+    },
   });
   return response.data;
 }

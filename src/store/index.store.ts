@@ -79,7 +79,7 @@ export default createStore({
     async getAllFoodsByMeals({ commit }, idMeal: string) {
       try {
         const data: IFoodsBinds[] = await getAllFoodsByMeals(idMeal);
-        commit("listFoodsByMeals", data);
+        await commit("listFoodsByMeals", data);
       } catch (error) {
         console.error("Erreur lors de l'ajout du contrat");
       }
@@ -180,9 +180,10 @@ export default createStore({
       }
     },
 
-    async getOneFoodsNutritionalsByFoodBinds({ commit }, idMeal: string) {
+    async getOneFoodsNutritionalsByFoodBinds({ commit }, idMeal: any) {
       try {
-        const data: IFoodsNutritionals[] = await getOneFoodsNutritionalsByFoodBinds(idMeal);
+        const data: IFoodsNutritionals[] =
+          await getOneFoodsNutritionalsByFoodBinds(idMeal);
         commit("oneFoodByFoodBLind", data);
       } catch (error) {
         console.error("Erreur lors de l'ajout du contrat");

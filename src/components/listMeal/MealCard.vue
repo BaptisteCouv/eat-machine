@@ -69,10 +69,7 @@ export default {
     ...mapActions(["managementFoodInMealModal", "getAllFoodsByMeals"]),
 
     openModalWithParam(isOpen: boolean, idMeal: string) {
-      // console.log(idMeal);
-      this.getAllFoodsByMeals(idMeal)
-
-      
+      this.getAllFoodsByMeals(idMeal)      
       this.managementFoodInMealModal(isOpen);
     },
   },
