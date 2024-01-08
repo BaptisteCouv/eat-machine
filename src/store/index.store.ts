@@ -25,7 +25,6 @@ export default createStore({
     showAddCategoryModal: false,
     listAllMeals: {},
     listAllFoods: {},
-    oneFoodByFoodBLind: {},
     listAllCategory: {},
     listFoodsByMeals: {},
   },
@@ -40,7 +39,6 @@ export default createStore({
       state.showAddFoodInMealModal = isOpen;
     },
     managementCategoryModal(state, isOpen) {
-      console.log(isOpen);
       state.showAddCategoryModal = isOpen;
     },
 
@@ -55,9 +53,6 @@ export default createStore({
     },
     listFoodsByMeals(state, listFoodsByMeals) {
       state.listFoodsByMeals = listFoodsByMeals;
-    },
-    oneFoodByFoodBLind(state, oneFoodByFoodBLind) {
-      state.oneFoodByFoodBLind = oneFoodByFoodBLind;
     },
   },
   actions: {
@@ -79,7 +74,50 @@ export default createStore({
     async getAllFoodsByMeals({ commit }, idMeal: string) {
       try {
         const data: IFoodsBinds[] = await getAllFoodsByMeals(idMeal);
-        await commit("listFoodsByMeals", data);
+        if (data) {
+          data.forEach((element: IFoodsBinds) => {
+            element.foodDetails.forEach((food: IFoodsNutritionals) => {
+              const transformedObject: IFoodsNutritionals = {
+                name: food.name,
+                price: food.price,
+                unitMeasurement: food.unitMeasurement,
+                detail: [
+                  {
+                    icon: "mdi-fire",
+                    name: "Calories",
+                    quantity: food.calories,
+                    unit: "kcal",
+                    color: "red",
+                  },
+                  {
+                    icon: "mdi-food-drumstick-outline",
+                    name: "Protéines",
+                    quantity: food.protein,
+                    unit: "g",
+                    color: "blue",
+                  },
+                  {
+                    icon: "mdi-barley",
+                    name: "Glucides",
+                    quantity: food.carbohydrates,
+                    unit: "g",
+                    color: "green",
+                  },
+                  {
+                    icon: "mdi-lightning-bolt-outline",
+                    name: "Lipides",
+                    quantity: food.lipid,
+                    unit: "g",
+                    color: "orange",
+                  },
+                ],
+              };
+              element.foodDetails = transformedObject;
+            });
+          });
+
+          await commit("listFoodsByMeals", data);
+        }
       } catch (error) {
         console.error("Erreur lors de l'ajout du contrat");
       }
@@ -184,7 +222,33 @@ export default createStore({
       try {
         const data: IFoodsNutritionals[] =
           await getOneFoodsNutritionalsByFoodBinds(idMeal);
-        commit("oneFoodByFoodBLind", data);
+        let newData: IFoodsNutritionals[] = [];
+        data.forEach((element) => {
+          const transformedObject = [
+            {
+              name: "Calories",
+              quantity: element.calories,
+              unit: "kcal",
+            },
+            {
+              name: "Protéines",
+              quantity: element.protein,
+              unit: "g",
+            },
+            {
+              name: "Glucides",
+              quantity: element.carbohydrates,
+              unit: "g",
+            },
+            {
+              name: "Lipides",
+              quantity: element.lipid,
+              unit: "g",
+            },
+          ];
+          newData = transformedObject;
+        });
+        return newData;
       } catch (error) {
         console.error("Erreur lors de l'ajout du contrat");
       }
@@ -199,6 +263,5 @@ export default createStore({
     getListAllFoods: (state) => state.listAllFoods,
     getListAllCategory: (state) => state.listAllCategory,
     getListFoodsByMeals: (state) => state.listFoodsByMeals,
-    getoneFoodByFoodBLind: (state) => state.oneFoodByFoodBLind,
   },
 });

@@ -1,6 +1,6 @@
 export interface IFoodsNutritionals {
   name: string;
-  unitMeasurement: boolean;
+  unitMeasurement?: boolean;
   calories?: number;
   protein?: number;
   lipid?: number;

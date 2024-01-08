@@ -39,76 +39,44 @@
                 <v-row>
                   <v-col cols="12" class="pb-0">
                     <v-text-field
-                      v-model="i.foodDetails[0].name"
+                      v-model="i.foodDetails.name"
                       label="Sélectionner un aliment"
                       readonly
                     ></v-text-field>
                   </v-col>
                   <v-col cols="8" class="pt-0">
                     <v-switch
-                      v-model="i.foodDetails[0].unitMeasurement"
-                      label="A l'unité ?"
+                      v-model="i.foodDetails.unitMeasurement"
+                      label="A l'unité"
                       color="primary"
+                      readonly
                     ></v-switch>
                   </v-col>
                   <v-col cols="4" class="pt-0">
                     <v-text-field
                       v-model="i.quantity"
                       label="Quantité"
-                      :suffix="isUnit(i.foodDetails[0].unitMeasurement)"
+                      :suffix="isUnit(i.foodDetails.unitMeasurement)"
                       type="number"
+                      @blur="changeValueData(i)"
                     >
                     </v-text-field>
                   </v-col>
                 </v-row>
+
                 <v-row class="meal-detail-card--body">
                   <v-col
                     cols="3"
                     class="d-flex align-center flex-column"
+                    v-for="y in i.foodDetails.detail"
+                    :key="y"
                   >
-                    <div class="meal-detail-card-body--title">Calories</div>
+                    <div class="meal-detail-card-body--title">{{ y.name }}</div>
                     <div class="meal-detail-card-body--total">
-                      {{ i.foodDetails[0].calories }}
+                      {{ y.quantity }}
                     </div>
                     <div class="meal-detail-card-body-total--unit">
-                      kcal
-                    </div>
-                  </v-col>
-                  <v-col
-                    cols="3"
-                    class="d-flex align-center flex-column"
-                  >
-                    <div class="meal-detail-card-body--title">Protéines</div>
-                    <div class="meal-detail-card-body--total">
-                      {{ 
-                        i.foodDetails[0].protein }}
-                    </div>
-                    <div class="meal-detail-card-body-total--unit">
-                      g
-                    </div>
-                  </v-col>
-                  <v-col
-                    cols="3"
-                    class="d-flex align-center flex-column"
-                  >
-                    <div class="meal-detail-card-body--title">Glucides</div>
-                    <div class="meal-detail-card-body--total">
-                      {{ i.foodDetails[0].carbohydrates }}
-                    </div>
-                    <div class="meal-detail-card-body-total--unit">
-                      g
-                    </div>
-                  </v-col>
-                  <v-col
-                    cols="3"
-                    class="d-flex align-center flex-column"
-                  >
-                    <div class="meal-detail-card-body--title">Lipides</div>
-                    <div class="meal-detail-card-body--total">
-                      {{ i.foodDetails[0].lipid }}
-                    </div>
-                    <div class="meal-detail-card-body-total--unit">
-                      g
+                      {{ y.unit }}
                     </div>
                   </v-col>
                 </v-row>
@@ -138,6 +106,7 @@ export default {
       textFieldDate: "",
       grams: "",
       formData: [],
+      currentFoodSelect: [],
     };
   },
   computed: {
@@ -146,6 +115,18 @@ export default {
       "getListFoodsByMeals",
       "getoneFoodByFoodBLind",
     ]),
+  },
+  watch: {
+    getListFoodsByMeals(data) {
+      if (data) {
+        data.forEach((element: any) => {
+          element.foodDetails.detail.forEach((i: any) => {
+            let a = (element.quantity / 100) * i.quantity;
+            i.quantity = parseFloat(a.toFixed(1));
+          });
+        });
+      }
+    },
   },
   methods: {
     ...mapActions([
@@ -166,8 +147,21 @@ export default {
         return "g";
       }
     },
-    getAllFood(id: string) {
-      this.getOneFoodsNutritionalsByFoodBinds([id]);
+    async getOneFood(id: string) {
+      await this.getOneFoodsNutritionalsByFoodBinds([id]).then((response) => {
+        this.currentFoodSelect = response;
+      });
+    },
+    async changeValueData(data: any) {
+      await this.getOneFood(data.idFood);
+      delete data.foodDetails.detail;
+
+      data.foodDetails.detail = this.currentFoodSelect;
+
+      data.foodDetails.detail.forEach((detailElement: any) => {
+        let a = (data.quantity / 100) * detailElement.quantity;
+        detailElement.quantity = parseFloat(a.toFixed(1));
+      });
     },
     addFood() {
       const myFood = {

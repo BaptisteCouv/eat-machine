@@ -144,8 +144,7 @@ export default {
           }
         });
       }
-
-      console.log(JSON.stringify(this.formData));
+      
       this.addNewOneMeal(this.formData);
       this.closeListMealModal();
       this.$emit("some-event");
