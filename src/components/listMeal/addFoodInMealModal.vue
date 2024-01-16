@@ -164,42 +164,7 @@ export default {
       });
     },
     addFood() {
-      const myFood = {
-        name: "",
-        quantity: "",
-        unit: false,
-        detail: [
-          {
-            icon: "mdi-fire",
-            name: "Calories",
-            quantity: 619,
-            unit: "kcal",
-            color: "red",
-          },
-          {
-            icon: "mdi-food-drumstick-outline",
-            name: "Protéines",
-            quantity: 24,
-            unit: "g",
-            color: "blue",
-          },
-          {
-            icon: "mdi-barley",
-            name: "Glucides",
-            quantity: 5.7,
-            unit: "g",
-            color: "green",
-          },
-          {
-            icon: "mdi-lightning-bolt-outline",
-            name: "Lipides",
-            quantity: 54,
-            unit: "g",
-            color: "orange",
-          },
-        ],
-      };
-      this.formData.push(myFood);
+     
     },
   },
 };
