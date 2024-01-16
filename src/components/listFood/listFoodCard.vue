@@ -29,7 +29,7 @@
   </div> -->
   <div class="list-meal-card--list pt-4">
     <!-- Pour maintenir la cohérence visuelle et achever l'intégration du composant "MealDetailCard" dans le but de rendre le contenu dynamique et harmonieux avec les autres éléments -->
-    <MealDetailCard :allFoods="tempData" />
+    <MealDetailCard :allFoods="tempData" :edit-mode="editMode" />
     <!-- <v-sheet
       class="list-meal-card-list--sheet my-2"
       v-for="(i, e) in tempData"
@@ -113,6 +113,11 @@ export default {
       originalTempData: [],
     };
   },
+  props : {
+    editMode : {
+      type: Boolean,
+    }
+  },
   created() {
     this.getAllListFoods();
   },
@@ -132,7 +137,7 @@ export default {
     },
     convertPrice() {
       this.tempData = JSON.parse(JSON.stringify(this.originalTempData));
-      
+
       this.tempData.forEach((element: any) => {
         element.detail.forEach((detailElement: any) => {
           // Rajouter une condition pour savoir si il est a l'unité ou non

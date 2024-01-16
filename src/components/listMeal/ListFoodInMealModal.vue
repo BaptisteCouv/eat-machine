@@ -1,4 +1,6 @@
 <template>
+  <AddFoodMealModal />
+
   <v-dialog
     v-model="isManagementFoodInMealModal"
     fullscreen
@@ -37,22 +39,17 @@
             <v-sheet class="food-card">
               <v-container>
                 <v-row>
-                  <v-col cols="12" class="pb-0">
-                    <v-text-field
-                      v-model="i.foodDetails.name"
-                      label="Sélectionner un aliment"
-                      readonly
-                    ></v-text-field>
+                  <v-col cols="9">
+                    <div>{{ i.foodDetails.name }}</div>
                   </v-col>
-                  <v-col cols="8" class="pt-0">
-                    <v-switch
-                      v-model="i.foodDetails.unitMeasurement"
-                      label="A l'unité"
-                      color="primary"
-                      readonly
-                    ></v-switch>
+                  <v-col cols="3">
+                    <div class="price text-right">
+                      {{ i.foodDetails.price }} €
+                    </div>
                   </v-col>
-                  <v-col cols="4" class="pt-0">
+                </v-row>
+                <v-row>
+                  <v-col cols="5" offset="7" class="pt-0">
                     <v-text-field
                       v-model="i.quantity"
                       label="Quantité"
@@ -91,14 +88,16 @@
 
 <script lang="ts">
 import DefaultTitle from "@/components/default/DefaultTitle.vue";
+import AddFoodMealModal from "@/components/listMeal/AddFoodMealModal.vue";
 
 import { mapGetters, mapActions } from "vuex";
 
 export default {
-  name: "addFoodInMealModal",
+  name: "ListFoodInMealModal",
 
   components: {
     DefaultTitle,
+    AddFoodMealModal,
   },
   data() {
     return {
@@ -113,7 +112,8 @@ export default {
     ...mapGetters([
       "isManagementFoodInMealModal",
       "getListFoodsByMeals",
-      "getoneFoodByFoodBLind",
+      "isManagementAddFoodInMealModal",
+      "isAddIdCurrentMealOpenend"
     ]),
   },
   watch: {
@@ -127,11 +127,18 @@ export default {
         });
       }
     },
+    isManagementAddFoodInMealModal() {
+      if (!this.isManagementAddFoodInMealModal) {
+        this.getAllFoodsByMeals(this.isAddIdCurrentMealOpenend);
+      }
+    },
   },
   methods: {
     ...mapActions([
       "managementFoodInMealModal",
       "getOneFoodsNutritionalsByFoodBinds",
+      "managementAddFoodInMealModal",
+      "getAllFoodsByMeals",
     ]),
     closeModal() {
       this.managementFoodInMealModal(false);
@@ -164,7 +171,7 @@ export default {
       });
     },
     addFood() {
-     
+      this.managementAddFoodInMealModal(true);
     },
   },
 };
@@ -195,5 +202,11 @@ export default {
     font-weight: 300;
     line-height: 7px;
   }
+}
+
+.price {
+  color: #36485e;
+  font-size: 15px;
+  font-weight: 600;
 }
 </style>

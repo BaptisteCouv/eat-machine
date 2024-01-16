@@ -1,5 +1,5 @@
 <template>
-  <AddFoodInMealModal />
+  <ListFoodInMealModal />
 
   <v-container>
     <v-row>
@@ -42,14 +42,14 @@
 </template>
 
 <script lang="ts">
-import AddFoodInMealModal from "@/components/listMeal/addFoodInMealModal.vue";
+import ListFoodInMealModal from "@/components/listMeal/ListFoodInMealModal.vue";
 
 import { mapActions } from "vuex";
 
 export default {
   name: "MealCard",
   components: {
-    AddFoodInMealModal,
+    ListFoodInMealModal,
   },
   props: {
     getListAllCategory: {
@@ -66,11 +66,16 @@ export default {
     return {};
   },
   methods: {
-    ...mapActions(["managementFoodInMealModal", "getAllFoodsByMeals"]),
+    ...mapActions([
+      "managementFoodInMealModal",
+      "getAllFoodsByMeals",
+      "addIdCurrentMealOpenend",
+    ]),
 
     openModalWithParam(isOpen: boolean, idMeal: string) {
-      this.getAllFoodsByMeals(idMeal)      
+      this.getAllFoodsByMeals(idMeal);
       this.managementFoodInMealModal(isOpen);
+      this.addIdCurrentMealOpenend(idMeal);
     },
   },
 };

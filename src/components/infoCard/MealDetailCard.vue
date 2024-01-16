@@ -29,11 +29,25 @@
         <div class="meal-detail-card-body-total--unit">{{ y.unit }}</div>
       </v-col>
     </v-row>
+    <v-row class="d-flex justify-center">
+      <v-btn
+        variant="flat"
+        color="primary"
+        class="btn-add px-12"
+        rounded="xl"
+        @click="addMeal(i)"
+      >
+        Ajouter
+      </v-btn>
+    </v-row>
     <v-divider class="mt-4"></v-divider>
   </v-container>
 </template>
 
 <script lang="ts">
+import { createOnFoodByMeal } from "@/services/foodsBinds.services";
+import { mapGetters, mapActions } from "vuex";
+
 export default {
   name: "MealDetailCard",
 
@@ -45,10 +59,29 @@ export default {
 
   props: {
     allFoods: {},
+    editMode: {
+      type: Boolean,
+    },
+  },
+  computed: {
+    ...mapGetters(["isAddIdCurrentMealOpenend"]),
+  },
+  methods: {
+    ...mapActions(["managementAddFoodInMealModal"]),
+
+    addMeal(mealDetail: any) {
+      const params = {
+        idMeals: this.isAddIdCurrentMealOpenend,
+        idFood: mealDetail.id,
+        quantity: 100,
+      };
+      createOnFoodByMeal(params);
+      this.managementAddFoodInMealModal(false);
+    },
   },
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .meal-detail--card {
   .meal-detail-card--header {
     .meal-detail-card-header--icon {
@@ -83,5 +116,8 @@ export default {
       line-height: 7px;
     }
   }
+}
+.btn-add {
+  opacity: 0.5;
 }
 </style>

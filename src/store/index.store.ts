@@ -21,8 +21,10 @@ export default createStore({
   state: {
     showAddMealListModal: false,
     showAddFoodListModal: false,
+    showListFoodInMealModal: false,
     showAddFoodInMealModal: false,
     showAddCategoryModal: false,
+    idCurrentMealOpenend: "",
     listAllMeals: {},
     listAllFoods: {},
     listAllCategory: {},
@@ -36,12 +38,17 @@ export default createStore({
       state.showAddFoodListModal = isOpen;
     },
     managementFoodInMealModal(state, isOpen) {
+      state.showListFoodInMealModal = isOpen;
+    },
+    managementAddFoodInMealModal(state, isOpen) {
       state.showAddFoodInMealModal = isOpen;
     },
     managementCategoryModal(state, isOpen) {
       state.showAddCategoryModal = isOpen;
     },
-
+    addIdCurrentMealOpenend(state, id) {
+      state.idCurrentMealOpenend = id;
+    },
     listAllMeals(state, listAllMeals) {
       state.listAllMeals = listAllMeals;
     },
@@ -65,8 +72,14 @@ export default createStore({
     managementFoodInMealModal({ commit }, params) {
       commit("managementFoodInMealModal", params);
     },
+    managementAddFoodInMealModal({ commit }, params) {
+      commit("managementAddFoodInMealModal", params);
+    },
     managementCategoryModal({ commit }, params) {
       commit("managementCategoryModal", params);
+    },
+    addIdCurrentMealOpenend({ commit }, params) {
+      commit("addIdCurrentMealOpenend", params);
     },
 
     // FOOD BIND --------------------------------------------------
@@ -78,6 +91,7 @@ export default createStore({
           data.forEach((element: IFoodsBinds) => {
             element.foodDetails.forEach((food: IFoodsNutritionals) => {
               const transformedObject: IFoodsNutritionals = {
+                id: food._id,
                 name: food.name,
                 price: food.price,
                 unitMeasurement: food.unitMeasurement,
@@ -115,7 +129,6 @@ export default createStore({
               element.foodDetails = transformedObject;
             });
           });
-
           await commit("listFoodsByMeals", data);
         }
       } catch (error) {
@@ -146,7 +159,7 @@ export default createStore({
     async getAllMeals({ commit }) {
       try {
         const data: IMeals[] = await getAllListMeals();
-
+        
         commit("listAllMeals", data);
       } catch (error) {
         console.error("Erreur lors de l'ajout du contrat");
@@ -166,8 +179,10 @@ export default createStore({
       try {
         const data: IFoodsNutritionals[] = await getAllListFoodsNutritionals();
         const newData: IFoodsNutritionals[] = [];
+        
         data.forEach((element) => {
           const transformedObject: IFoodsNutritionals = {
+            id: element._id,
             name: element.name,
             price: element.price,
             detail: [
@@ -257,8 +272,10 @@ export default createStore({
   getters: {
     isManagementListMealModal: (state) => state.showAddMealListModal,
     isManagementListFoodModal: (state) => state.showAddFoodListModal,
-    isManagementFoodInMealModal: (state) => state.showAddFoodInMealModal,
+    isManagementFoodInMealModal: (state) => state.showListFoodInMealModal,
+    isManagementAddFoodInMealModal: (state) => state.showAddFoodInMealModal,
     isManagementCategoryModal: (state) => state.showAddCategoryModal,
+    isAddIdCurrentMealOpenend: (state) => state.idCurrentMealOpenend,
     getListAllMeals: (state) => state.listAllMeals,
     getListAllFoods: (state) => state.listAllFoods,
     getListAllCategory: (state) => state.listAllCategory,
