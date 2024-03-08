@@ -152,7 +152,6 @@ export default createStore({
     async getAllListFoodsNutritionals({ commit }) {
       try {
         const data: IFoodsNutritionals[] = await getAllListFoodsNutritionals();
-        console.log(data);
 
         commit("listAllFoods", data);
       } catch (error) {

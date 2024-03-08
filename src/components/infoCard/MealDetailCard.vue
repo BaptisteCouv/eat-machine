@@ -130,9 +130,7 @@ export default {
         idFood: mealDetail,
         quantity: 100,
       };
-      createOnFoodByMeal(params).then((response) => {
-        console.log(response);
-      });
+      createOnFoodByMeal(params);
       this.managementAddFoodInMealModal(false);
     },
     deleteData(idFood: string) {

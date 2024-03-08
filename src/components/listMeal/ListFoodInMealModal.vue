@@ -29,6 +29,17 @@
             </v-btn>
           </v-col>
         </v-row>
+        <v-row>
+          <v-col>
+            <MealDetailCard
+              :nutritionalsData="totalAllData.foodBindValue"
+              :currentQuantity="totalAllData.quantity"
+              :currentIdBind="totalAllData.idFoodBind"
+              :edit-mode="false"
+              @change-quantite="changeValueData"
+            />
+          </v-col>
+        </v-row>
         <v-row v-if="tempData">
           <v-col>
             <div v-for="food in tempData" :key="food">
@@ -69,6 +80,18 @@ export default {
       currentFoodSelect: [],
       tempData: [],
       originalTempData: [],
+      totalAllData: {
+        quantity: 0,
+        foodBindValue: {
+          name: "Total",
+          unitMeasurement: false,
+          calories: 0,
+          protein: 0,
+          lipid: 0,
+          carbohydrates: 0,
+          price: 0,
+        },
+      },
     };
   },
   computed: {
@@ -85,9 +108,16 @@ export default {
     }),
   },
   watch: {
-    isManagementAddFoodInMealModal() {
+    async isManagementAddFoodInMealModal() {
       if (!this.isManagementAddFoodInMealModal) {
-        this.getAllFoodsByMeals(this.isAddIdCurrentMealOpenend);
+        await this.getAllFoodsByMeals(this.isAddIdCurrentMealOpenend).then(
+          () => {
+            this.tempData = this.listFood;
+            this.originalTempData = JSON.parse(JSON.stringify(this.listFood));
+            this.convertPrice();
+            this.calcultotalData();
+          }
+        );
       }
     },
     isManagementFoodInMealModal() {
@@ -95,6 +125,7 @@ export default {
         this.tempData = this.listFood;
         this.originalTempData = JSON.parse(JSON.stringify(this.listFood));
         this.convertPrice();
+        this.calcultotalData();
       });
     },
   },
@@ -127,6 +158,34 @@ export default {
         quantity: quantity,
       });
       this.convertOnePrice(id, quantity, idFood);
+      this.calcultotalData();
+    },
+
+    calcultotalData() {
+      let total = {
+        quantity: 0,
+        foodBindValue: {
+          name: "Total",
+          unitMeasurement: false,
+          calories: 0,
+          protein: 0,
+          lipid: 0,
+          carbohydrates: 0,
+          price: 0,
+        },
+      };
+
+      this.tempData.forEach((element) => {
+        total.quantity += element.quantity;
+        total.foodBindValue.calories += element.foodBindValue.calories;
+        total.foodBindValue.protein += element.foodBindValue.protein;
+        total.foodBindValue.lipid += element.foodBindValue.lipid;
+        total.foodBindValue.carbohydrates +=
+          element.foodBindValue.carbohydrates;
+        total.foodBindValue.price += element.foodBindValue.price;
+      });
+
+      this.totalAllData = total;
     },
 
     convertOnePrice(idMeal: string, quantiteChange: number, idFood: string) {
