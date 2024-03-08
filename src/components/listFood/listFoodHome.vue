@@ -51,8 +51,9 @@ export default {
       this.managementListFoodModal(isOpen);
     },
     handleEventFromChild() {
-      console.log("passe");
+      //
     },
+
   },
 };
 </script>

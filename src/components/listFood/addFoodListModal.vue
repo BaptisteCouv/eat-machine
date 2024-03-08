@@ -160,11 +160,11 @@ export default {
     addFoodToList() {
       this.addNewOneFoodNutritional(this.formData);
       this.closeListFoodModal();
-      this.triggerParentFunction()
+      this.triggerParentFunction();
     },
     triggerParentFunction() {
-      this.$emit('some-event');
-    }
+      this.$emit("some-event");
+    },
   },
 };
 </script>

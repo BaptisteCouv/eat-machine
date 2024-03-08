@@ -44,8 +44,7 @@
                   @click="dialogVisible = true"
                 ></v-text-field>
               </template>
-              <v-date-picker v-model="formData.dateSelect">
-                <!-- <v-spacer></v-spacer> -->
+              <v-date-picker v-model="formData.dateSelect"> 
                 <v-btn color="primary" @click="dialogVisible = false">
                   Cancel
                 </v-btn>

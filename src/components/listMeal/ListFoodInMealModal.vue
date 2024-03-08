@@ -29,56 +29,17 @@
             </v-btn>
           </v-col>
         </v-row>
-        <v-row>
-          <v-col
-            cols="12"
-            class="pb-0"
-            v-for="i in getListFoodsByMeals"
-            :key="i"
-          >
-            <v-sheet class="food-card">
-              <v-container>
-                <v-row>
-                  <v-col cols="9">
-                    <div>{{ i.foodDetails.name }}</div>
-                  </v-col>
-                  <v-col cols="3">
-                    <div class="price text-right">
-                      {{ i.foodDetails.price }} €
-                    </div>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col cols="5" offset="7" class="pt-0">
-                    <v-text-field
-                      v-model="i.quantity"
-                      label="Quantité"
-                      :suffix="isUnit(i.foodDetails.unitMeasurement)"
-                      type="number"
-                      @blur="changeValueData(i)"
-                    >
-                    </v-text-field>
-                  </v-col>
-                </v-row>
-
-                <v-row class="meal-detail-card--body">
-                  <v-col
-                    cols="3"
-                    class="d-flex align-center flex-column"
-                    v-for="y in i.foodDetails.detail"
-                    :key="y"
-                  >
-                    <div class="meal-detail-card-body--title">{{ y.name }}</div>
-                    <div class="meal-detail-card-body--total">
-                      {{ y.quantity }}
-                    </div>
-                    <div class="meal-detail-card-body-total--unit">
-                      {{ y.unit }}
-                    </div>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-sheet>
+        <v-row v-if="tempData">
+          <v-col>
+            <div v-for="food in tempData" :key="food">
+              <MealDetailCard
+                :nutritionalsData="food.foodBindValue"
+                :currentQuantity="food.quantity"
+                :currentIdBind="food.idFoodBind"
+                :edit-mode="true"
+                @change-quantite="changeValueData"
+              />
+            </div>
           </v-col>
         </v-row>
       </v-container>
@@ -89,8 +50,9 @@
 <script lang="ts">
 import DefaultTitle from "@/components/default/DefaultTitle.vue";
 import AddFoodMealModal from "@/components/listMeal/AddFoodMealModal.vue";
+import MealDetailCard from "@/components/infoCard/MealDetailCard.vue";
 
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapState } from "vuex";
 
 export default {
   name: "ListFoodInMealModal",
@@ -98,14 +60,15 @@ export default {
   components: {
     DefaultTitle,
     AddFoodMealModal,
+    MealDetailCard,
   },
   data() {
     return {
-      dialogVisible: false,
       textFieldDate: "",
-      grams: "",
       formData: [],
       currentFoodSelect: [],
+      tempData: [],
+      originalTempData: [],
     };
   },
   computed: {
@@ -113,24 +76,26 @@ export default {
       "isManagementFoodInMealModal",
       "getListFoodsByMeals",
       "isManagementAddFoodInMealModal",
-      "isAddIdCurrentMealOpenend"
+      "isAddIdCurrentMealOpenend",
+      "changeFoodsByMeals",
     ]),
+    ...mapState({
+      listFood: (state: any) => state.listFoodsByMeals,
+      idCurrentMealOpenend: (state: any) => state.idCurrentMealOpenend,
+    }),
   },
   watch: {
-    getListFoodsByMeals(data) {
-      if (data) {
-        data.forEach((element: any) => {
-          element.foodDetails.detail.forEach((i: any) => {
-            let a = (element.quantity / 100) * i.quantity;
-            i.quantity = parseFloat(a.toFixed(1));
-          });
-        });
-      }
-    },
     isManagementAddFoodInMealModal() {
       if (!this.isManagementAddFoodInMealModal) {
         this.getAllFoodsByMeals(this.isAddIdCurrentMealOpenend);
       }
+    },
+    isManagementFoodInMealModal() {
+      this.getAllFoodsByMeals(this.isAddIdCurrentMealOpenend).then(() => {
+        this.tempData = this.listFood;
+        this.originalTempData = JSON.parse(JSON.stringify(this.listFood));
+        this.convertPrice();
+      });
     },
   },
   methods: {
@@ -139,6 +104,7 @@ export default {
       "getOneFoodsNutritionalsByFoodBinds",
       "managementAddFoodInMealModal",
       "getAllFoodsByMeals",
+      "modifyFoodsByMeals",
     ]),
     closeModal() {
       this.managementFoodInMealModal(false);
@@ -154,22 +120,117 @@ export default {
         return "g";
       }
     },
-    async getOneFood(id: string) {
-      await this.getOneFoodsNutritionalsByFoodBinds([id]).then((response) => {
-        this.currentFoodSelect = response;
-      });
-    },
-    async changeValueData(data: any) {
-      await this.getOneFood(data.idFood);
-      delete data.foodDetails.detail;
 
-      data.foodDetails.detail = this.currentFoodSelect;
-
-      data.foodDetails.detail.forEach((detailElement: any) => {
-        let a = (data.quantity / 100) * detailElement.quantity;
-        detailElement.quantity = parseFloat(a.toFixed(1));
+    async changeValueData(id: string, quantity: number, idFood: string) {
+      this.modifyFoodsByMeals({
+        idFoodMeal: id,
+        quantity: quantity,
       });
+      this.convertOnePrice(id, quantity, idFood);
     },
+
+    convertOnePrice(idMeal: string, quantiteChange: number, idFood: string) {
+      const GRAM_TO_KG = 1000;
+      const GRAM_TO_PERCENTAGE = 100;
+      let allPass = true;
+      if (idMeal && quantiteChange && idFood) {
+        allPass = false;
+      }
+
+      for (let index = 0; index < this.tempData.length; index++) {
+        let quantity;
+
+        if (quantiteChange) {
+          quantity = quantiteChange;
+        } else {
+          quantity = this.tempData[index].quantity;
+        }
+
+        if (
+          (this.tempData[index].foodBindValue._id === idFood &&
+            this.tempData[index].idFoodBind === idMeal) ||
+          allPass
+        ) {
+          this.tempData[index].foodBindValue = JSON.parse(
+            JSON.stringify(this.originalTempData[index].foodBindValue)
+          );
+
+          const calculateNutritionalValues = (value) =>
+            parseFloat(((quantity / GRAM_TO_PERCENTAGE) * value).toFixed(1));
+
+          this.tempData[index].foodBindValue.calories =
+            calculateNutritionalValues(
+              this.tempData[index].foodBindValue.calories
+            );
+          this.tempData[index].foodBindValue.protein =
+            calculateNutritionalValues(
+              this.tempData[index].foodBindValue.protein
+            );
+          this.tempData[index].foodBindValue.lipid = calculateNutritionalValues(
+            this.tempData[index].foodBindValue.lipid
+          );
+          this.tempData[index].foodBindValue.carbohydrates =
+            calculateNutritionalValues(
+              this.tempData[index].foodBindValue.carbohydrates
+            );
+
+          const price =
+            (this.tempData[index].foodBindValue.price * quantity) / GRAM_TO_KG;
+          this.tempData[index].foodBindValue.price = parseFloat(
+            price.toFixed(1)
+          );
+        }
+      }
+    },
+
+    convertPrice(quantiteChange) {
+      const GRAM_TO_KG = 1000;
+      const GRAM_TO_PERCENTAGE = 100;
+
+      if (this.tempData) {
+        for (let index = 0; index < this.tempData.length; index++) {
+          // Copie profonde de foodBindValue
+          this.tempData[index].foodBindValue = JSON.parse(
+            JSON.stringify(this.originalTempData[index].foodBindValue)
+          );
+
+          let quantity;
+          if (quantiteChange) {
+            quantity = quantiteChange;
+          } else {
+            quantity = this.tempData[index].quantity;
+          }
+
+          // Fonction pour calculer les valeurs nutritionnelles
+          const calculateNutritionalValues = (value) =>
+            parseFloat(((quantity / GRAM_TO_PERCENTAGE) * value).toFixed(1));
+
+          this.tempData[index].foodBindValue.calories =
+            calculateNutritionalValues(
+              this.tempData[index].foodBindValue.calories
+            );
+          this.tempData[index].foodBindValue.protein =
+            calculateNutritionalValues(
+              this.tempData[index].foodBindValue.protein
+            );
+          this.tempData[index].foodBindValue.lipid = calculateNutritionalValues(
+            this.tempData[index].foodBindValue.lipid
+          );
+          this.tempData[index].foodBindValue.carbohydrates =
+            calculateNutritionalValues(
+              this.tempData[index].foodBindValue.carbohydrates
+            );
+
+          // Calcul du prix
+          const price =
+            (this.tempData[index].foodBindValue.price * quantity) / GRAM_TO_KG;
+          this.tempData[index].foodBindValue.price = parseFloat(
+            price.toFixed(1)
+          );
+        }
+      }
+    },
+
     addFood() {
       this.managementAddFoodInMealModal(true);
     },

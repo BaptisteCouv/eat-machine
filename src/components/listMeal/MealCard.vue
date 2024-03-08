@@ -73,7 +73,6 @@ export default {
     ]),
 
     openModalWithParam(isOpen: boolean, idMeal: string) {
-      this.getAllFoodsByMeals(idMeal);
       this.managementFoodInMealModal(isOpen);
       this.addIdCurrentMealOpenend(idMeal);
     },

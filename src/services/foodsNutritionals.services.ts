@@ -18,3 +18,8 @@ export async function addOneFoodNutritional(food: object) {
   const response = await axios.post("/api/foodsNutritional", food);
   return response.data;
 }
+
+export async function deleteOneFoodNutritional(id: string) {
+  const response = await axios.delete("/api/foodsNutritional/" + id);
+  return response.data;
+}

@@ -5,12 +5,16 @@ import {
   getAllListFoodsNutritionals,
   addOneFoodNutritional,
   getOneFoodsNutritionalsByFoodBinds,
+  deleteOneFoodNutritional,
 } from "@/services/foodsNutritionals.services";
 import {
   getAllListCategory,
   addOneCategory,
 } from "@/services/category.services";
-import { getAllFoodsByMeals } from "@/services/foodsBinds.services";
+import {
+  getAllFoodsByMeals,
+  modifyFoodsByMeals,
+} from "@/services/foodsBinds.services";
 
 import { IMeals } from "@/models/meals.models";
 import { IFoodsNutritionals } from "@/models/foodsNutritionals.models";
@@ -88,49 +92,19 @@ export default createStore({
       try {
         const data: IFoodsBinds[] = await getAllFoodsByMeals(idMeal);
         if (data) {
-          data.forEach((element: IFoodsBinds) => {
-            element.foodDetails.forEach((food: IFoodsNutritionals) => {
-              const transformedObject: IFoodsNutritionals = {
-                id: food._id,
-                name: food.name,
-                price: food.price,
-                unitMeasurement: food.unitMeasurement,
-                detail: [
-                  {
-                    icon: "mdi-fire",
-                    name: "Calories",
-                    quantity: food.calories,
-                    unit: "kcal",
-                    color: "red",
-                  },
-                  {
-                    icon: "mdi-food-drumstick-outline",
-                    name: "Protéines",
-                    quantity: food.protein,
-                    unit: "g",
-                    color: "blue",
-                  },
-                  {
-                    icon: "mdi-barley",
-                    name: "Glucides",
-                    quantity: food.carbohydrates,
-                    unit: "g",
-                    color: "green",
-                  },
-                  {
-                    icon: "mdi-lightning-bolt-outline",
-                    name: "Lipides",
-                    quantity: food.lipid,
-                    unit: "g",
-                    color: "orange",
-                  },
-                ],
-              };
-              element.foodDetails = transformedObject;
-            });
-          });
           await commit("listFoodsByMeals", data);
         }
+      } catch (error) {
+        console.error("Erreur lors de l'ajout du contrat");
+      }
+    },
+
+    async modifyFoodsByMeals(
+      { commit },
+      { idFoodMeal, quantity }: { idFoodMeal: string; quantity: number }
+    ) {
+      try {
+        await modifyFoodsByMeals(idFoodMeal, quantity);
       } catch (error) {
         console.error("Erreur lors de l'ajout du contrat");
       }
@@ -159,7 +133,7 @@ export default createStore({
     async getAllMeals({ commit }) {
       try {
         const data: IMeals[] = await getAllListMeals();
-        
+
         commit("listAllMeals", data);
       } catch (error) {
         console.error("Erreur lors de l'ajout du contrat");
@@ -178,48 +152,9 @@ export default createStore({
     async getAllListFoodsNutritionals({ commit }) {
       try {
         const data: IFoodsNutritionals[] = await getAllListFoodsNutritionals();
-        const newData: IFoodsNutritionals[] = [];
-        
-        data.forEach((element) => {
-          const transformedObject: IFoodsNutritionals = {
-            id: element._id,
-            name: element.name,
-            price: element.price,
-            detail: [
-              {
-                icon: "mdi-fire",
-                name: "Calories",
-                quantity: element.calories,
-                unit: "kcal",
-                color: "red",
-              },
-              {
-                icon: "mdi-food-drumstick-outline",
-                name: "Protéines",
-                quantity: element.protein,
-                unit: "g",
-                color: "blue",
-              },
-              {
-                icon: "mdi-barley",
-                name: "Glucides",
-                quantity: element.carbohydrates,
-                unit: "g",
-                color: "green",
-              },
-              {
-                icon: "mdi-lightning-bolt-outline",
-                name: "Lipides",
-                quantity: element.lipid,
-                unit: "g",
-                color: "orange",
-              },
-            ],
-          };
-          newData.push(transformedObject);
-        });
+        console.log(data);
 
-        commit("listAllFoods", newData);
+        commit("listAllFoods", data);
       } catch (error) {
         console.error("Erreur lors de l'ajout du contrat");
       }
@@ -234,6 +169,7 @@ export default createStore({
     },
 
     async getOneFoodsNutritionalsByFoodBinds({ commit }, idMeal: any) {
+      console.log("2A");
       try {
         const data: IFoodsNutritionals[] =
           await getOneFoodsNutritionalsByFoodBinds(idMeal);
@@ -266,6 +202,13 @@ export default createStore({
         return newData;
       } catch (error) {
         console.error("Erreur lors de l'ajout du contrat");
+      }
+    },
+    async deleteOneFoodNutritional({ commit }, id) {
+      try {
+        await deleteOneFoodNutritional(id);
+      } catch (error) {
+        console.error("Erreur lors de l'ajout du aliment");
       }
     },
   },
