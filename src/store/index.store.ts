@@ -14,6 +14,7 @@ import {
 import {
   getAllFoodsByMeals,
   modifyFoodsByMeals,
+  deleteOneFoodByMeal,
 } from "@/services/foodsBinds.services";
 
 import { IMeals } from "@/models/meals.models";
@@ -105,6 +106,14 @@ export default createStore({
     ) {
       try {
         await modifyFoodsByMeals(idFoodMeal, quantity);
+      } catch (error) {
+        console.error("Erreur lors de l'ajout du contrat");
+      }
+    },
+
+    async deleteOneFoodByMeal({ commit }, idFoodBind: string) {
+      try {
+        await deleteOneFoodByMeal(idFoodBind);
       } catch (error) {
         console.error("Erreur lors de l'ajout du contrat");
       }

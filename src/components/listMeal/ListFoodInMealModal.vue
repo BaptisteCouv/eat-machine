@@ -49,6 +49,7 @@
                 :currentIdBind="food.idFoodBind"
                 :edit-mode="true"
                 @change-quantite="changeValueData"
+                @delete-data="deleteOne"
               />
             </div>
           </v-col>
@@ -110,23 +111,11 @@ export default {
   watch: {
     async isManagementAddFoodInMealModal() {
       if (!this.isManagementAddFoodInMealModal) {
-        await this.getAllFoodsByMeals(this.isAddIdCurrentMealOpenend).then(
-          () => {
-            this.tempData = this.listFood;
-            this.originalTempData = JSON.parse(JSON.stringify(this.listFood));
-            this.convertPrice();
-            this.calcultotalData();
-          }
-        );
+        this.refreshData();
       }
     },
     isManagementFoodInMealModal() {
-      this.getAllFoodsByMeals(this.isAddIdCurrentMealOpenend).then(() => {
-        this.tempData = this.listFood;
-        this.originalTempData = JSON.parse(JSON.stringify(this.listFood));
-        this.convertPrice();
-        this.calcultotalData();
-      });
+      this.refreshData();
     },
   },
   methods: {
@@ -136,6 +125,7 @@ export default {
       "managementAddFoodInMealModal",
       "getAllFoodsByMeals",
       "modifyFoodsByMeals",
+      "deleteOneFoodByMeal",
     ]),
     closeModal() {
       this.managementFoodInMealModal(false);
@@ -151,7 +141,19 @@ export default {
         return "g";
       }
     },
+    refreshData() {
+      this.getAllFoodsByMeals(this.isAddIdCurrentMealOpenend).then(() => {
+        this.tempData = this.listFood;
+        this.originalTempData = JSON.parse(JSON.stringify(this.listFood));
+        this.convertPrice();
+        this.calcultotalData();
+      });
+    },
 
+    async deleteOne(idFoodBind: string, currentIdBind: string) {
+      await this.deleteOneFoodByMeal(currentIdBind);
+      this.refreshData();
+    },
     async changeValueData(id: string, quantity: number, idFood: string) {
       this.modifyFoodsByMeals({
         idFoodMeal: id,

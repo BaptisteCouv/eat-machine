@@ -17,3 +17,11 @@ export async function createOnFoodByMeal(params: any) {
   const response = await axios.post("/api/foodBind/", params);
   return response.data;
 }
+
+export async function deleteOneFoodByMeal(params: any) {
+  const response = await axios.delete("/api/foodBind/" + params);
+  return response.data;
+}
+
+
+

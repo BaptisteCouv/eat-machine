@@ -133,9 +133,10 @@ export default {
       createOnFoodByMeal(params);
       this.managementAddFoodInMealModal(false);
     },
-    deleteData(idFood: string) {
+    deleteData(id: string) {
       this.snackbar = true;
-      this.$emit("deleteData", idFood);
+
+      this.$emit("deleteData", id, this.currentIdBind);
     },
     changeQuantite(quantite: any, idFood: string) {
       this.$emit("changeQuantite", this.currentIdBind, quantite, idFood);
