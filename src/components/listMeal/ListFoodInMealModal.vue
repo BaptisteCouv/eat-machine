@@ -110,9 +110,7 @@ export default {
   },
   watch: {
     async isManagementAddFoodInMealModal() {
-      if (!this.isManagementAddFoodInMealModal) {
-        this.refreshData();
-      }
+      this.refreshData();
     },
     isManagementFoodInMealModal() {
       this.refreshData();
@@ -145,7 +143,7 @@ export default {
       this.getAllFoodsByMeals(this.isAddIdCurrentMealOpenend).then(() => {
         this.tempData = this.listFood;
         this.originalTempData = JSON.parse(JSON.stringify(this.listFood));
-        this.convertPrice();
+        this.convertPrice(null);
         this.calcultotalData();
       });
     },
@@ -199,7 +197,7 @@ export default {
       }
 
       for (let index = 0; index < this.tempData.length; index++) {
-        let quantity;
+        let quantity: any;
 
         if (quantiteChange) {
           quantity = quantiteChange;
@@ -244,7 +242,7 @@ export default {
       }
     },
 
-    convertPrice(quantiteChange) {
+    convertPrice(quantiteChange: any) {
       const GRAM_TO_KG = 1000;
       const GRAM_TO_PERCENTAGE = 100;
 
