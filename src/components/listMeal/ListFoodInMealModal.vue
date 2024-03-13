@@ -48,6 +48,9 @@
                 :currentQuantity="food.quantity"
                 :currentIdBind="food.idFoodBind"
                 :edit-mode="true"
+                :reduced-view="true"
+                :deletable="true"
+                :editable="true"
                 @change-quantite="changeValueData"
                 @delete-data="deleteOne"
               />

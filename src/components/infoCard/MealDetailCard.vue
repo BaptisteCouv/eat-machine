@@ -1,5 +1,5 @@
 <template>
-  <v-container class="meal-detail--card mb-2 pa-3" v-if="nutritionalsData">
+  <v-container v-if="!reducedView" class="meal-detail--card mb-2 pa-3">
     <v-row class="meal-detail header">
       <v-col cols="8" class="pa-0">
         <div class="meal-detail--title px-2 pt-2">
@@ -9,6 +9,7 @@
       <v-col cols="4" class="pa-0">
         <div class="px-2 pt-2 d-flex justify-end">
           <v-btn
+            v-if="addable"
             size="x-small"
             variant="outlined"
             icon="mdi-plus-box-multiple"
@@ -16,6 +17,7 @@
             @click="addMeal(nutritionalsData._id)"
           ></v-btn>
           <v-btn
+            v-if="editable"
             class="ml-1"
             size="x-small"
             icon="mdi-pencil"
@@ -23,6 +25,7 @@
             color="white"
           ></v-btn>
           <v-btn
+            v-if="deletable"
             class="ml-1"
             size="x-small"
             icon="mdi-trash-can-outline"
@@ -37,7 +40,7 @@
         <div class="detail-card quantite">
           <div class="title">Quantité</div>
           <input
-            v-if="editMode"
+            v-if="editable"
             v-model="totalQuantity"
             type="text"
             class="custom-input"
@@ -87,6 +90,95 @@
       </v-col>
     </v-row>
   </v-container>
+  <v-container v-else class="meal-detail--card mb-2 pa-3">
+    <v-row class="meal-detail header">
+      <v-col cols="8" class="pa-0">
+        <div class="meal-detail--title px-2 pt-2">
+          {{ nutritionalsData.name }}
+        </div>
+      </v-col>
+      <v-col cols="4" class="pa-0">
+        <div class="px-2 pt-2 d-flex justify-end">
+          <v-btn
+            v-if="addable"
+            size="x-small"
+            variant="outlined"
+            icon="mdi-plus-box-multiple"
+            color="white"
+            @click="addMeal(nutritionalsData._id)"
+          ></v-btn>
+          <v-btn
+            v-if="editable"
+            class="ml-1"
+            size="x-small"
+            icon="mdi-pencil"
+            variant="outlined"
+            color="white"
+          ></v-btn>
+          <v-btn
+            v-if="deletable"
+            class="ml-1"
+            size="x-small"
+            icon="mdi-trash-can-outline"
+            color="red"
+            @click="deleteData(nutritionalsData._id)"
+          ></v-btn>
+        </div>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="2" class="d-flex justify-center align-center">
+        <div class="detail-card quantite">
+          <div class="title">Quantité</div>
+          <input
+            v-if="editable"
+            v-model="totalQuantity"
+            type="text"
+            class="custom-input"
+            @blur="changeQuantite(totalQuantity, nutritionalsData._id)"
+          />
+          <div v-else class="number">{{ currentQuantity }}</div>
+          <div class="unit" v-if="nutritionalsData.unitMeasurement">u</div>
+          <div class="unit" v-else>g</div>
+        </div>
+      </v-col>
+      <v-col cols="2" class="d-flex justify-center align-center">
+        <div class="detail-card calories">
+          <div class="title">Calories</div>
+          <div class="number">{{ nutritionalsData.calories }}</div>
+          <div class="unit">kcal</div>
+        </div>
+      </v-col>
+      <v-col cols="2" class="d-flex justify-center align-center">
+        <div class="detail-card nutritional">
+          <div class="title">Glucides</div>
+          <div class="number">{{ nutritionalsData.carbohydrates }}</div>
+          <div class="unit">g</div>
+        </div>
+      </v-col>
+      <v-col cols="2" class="d-flex justify-center align-center">
+        <div class="detail-card nutritional">
+          <div class="title">Protéines</div>
+          <div class="number">{{ nutritionalsData.protein }}</div>
+          <div class="unit">g</div>
+        </div>
+      </v-col>
+      <v-col cols="2" class="d-flex justify-center align-center">
+        <div class="detail-card nutritional">
+          <div class="title">Lipides</div>
+          <div class="number">{{ nutritionalsData.lipid }}</div>
+          <div class="unit">g</div>
+        </div>
+      </v-col>
+      <v-col cols="2" class="d-flex justify-center align-center">
+        <div class="detail-card price">
+          <div class="title">Prix</div>
+          <div class="number">{{ nutritionalsData.price }}</div>
+          <div class="unit">€</div>
+        </div>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script lang="ts">
@@ -115,8 +207,21 @@ export default {
     currentIdBind: {
       type: String,
     },
-    editMode: {
+    editable: {
       type: Boolean,
+      default: false
+    },
+    deletable: {
+      type: Boolean,
+      default: false
+    },
+    addable: {
+      type: Boolean,
+      default: false
+    },
+    reducedView: {
+      type: Boolean,
+      default: false
     },
   },
   computed: {
