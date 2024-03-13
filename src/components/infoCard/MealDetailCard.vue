@@ -128,7 +128,10 @@
     </v-row>
     <v-row>
       <v-col cols="2" class="d-flex justify-center align-center">
-        <div class="detail-card quantite">
+        <div
+          class="detail-card quantite"
+          :class="reducedView ? 'reduced-view' : ''"
+        >
           <div class="title">Quantité</div>
           <input
             v-if="editable"
@@ -143,35 +146,47 @@
         </div>
       </v-col>
       <v-col cols="2" class="d-flex justify-center align-center">
-        <div class="detail-card calories">
+        <div class="detail-card" :class="reducedView ? 'reduced-view' : ''">
           <div class="title">Calories</div>
           <div class="number">{{ nutritionalsData.calories }}</div>
           <div class="unit">kcal</div>
         </div>
       </v-col>
       <v-col cols="2" class="d-flex justify-center align-center">
-        <div class="detail-card nutritional">
+        <div
+          class="detail-card nutritional"
+          :class="reducedView ? 'reduced-view' : ''"
+        >
           <div class="title">Glucides</div>
           <div class="number">{{ nutritionalsData.carbohydrates }}</div>
           <div class="unit">g</div>
         </div>
       </v-col>
       <v-col cols="2" class="d-flex justify-center align-center">
-        <div class="detail-card nutritional">
+        <div
+          class="detail-card nutritional"
+          :class="reducedView ? 'reduced-view' : ''"
+        >
           <div class="title">Protéines</div>
           <div class="number">{{ nutritionalsData.protein }}</div>
           <div class="unit">g</div>
         </div>
       </v-col>
       <v-col cols="2" class="d-flex justify-center align-center">
-        <div class="detail-card nutritional">
+        <div
+          class="detail-card nutritional"
+          :class="reducedView ? 'reduced-view' : ''"
+        >
           <div class="title">Lipides</div>
           <div class="number">{{ nutritionalsData.lipid }}</div>
           <div class="unit">g</div>
         </div>
       </v-col>
       <v-col cols="2" class="d-flex justify-center align-center">
-        <div class="detail-card price">
+        <div
+          class="detail-card price"
+          :class="reducedView ? 'reduced-view' : ''"
+        >
           <div class="title">Prix</div>
           <div class="number">{{ nutritionalsData.price }}</div>
           <div class="unit">€</div>
@@ -209,19 +224,19 @@ export default {
     },
     editable: {
       type: Boolean,
-      default: false
+      default: false,
     },
     deletable: {
       type: Boolean,
-      default: false
+      default: false,
     },
     addable: {
       type: Boolean,
-      default: false
+      default: false,
     },
     reducedView: {
       type: Boolean,
-      default: false
+      default: false,
     },
   },
   computed: {
@@ -240,7 +255,6 @@ export default {
     },
     deleteData(id: string) {
       this.snackbar = true;
-
       this.$emit("deleteData", id, this.currentIdBind);
     },
     changeQuantite(quantite: any, idFood: string) {
@@ -283,6 +297,19 @@ export default {
     &.nutritional {
       .number {
         color: #4d8f55;
+      }
+    }
+    &.reduced-view {
+      font-size: 10px;
+      .number {
+        font-weight: 800;
+        font-size: 20px;
+      }
+      .custom-input {
+        font-weight: 800;
+        font-size: 20px;
+        width: 50px;
+        height: 20px;
       }
     }
   }
