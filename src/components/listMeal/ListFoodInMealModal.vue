@@ -12,11 +12,11 @@
         <v-btn icon dark @click="closeModal()">
           <v-icon>mdi-chevron-left</v-icon>
         </v-btn>
-        <v-toolbar-title>add meal</v-toolbar-title>
+        <v-toolbar-title>{{ mealName }}</v-toolbar-title>
       </v-toolbar>
       <v-container>
-        <DefaultTitle title="Nom dynamique" />
-        <v-row>
+        <!-- <DefaultTitle :title="mealName" /> -->
+        <v-row class="mt-2">
           <v-col cols="12" class="pt-0 d-flex justify-end">
             <v-btn
               variant="flat"
@@ -96,6 +96,7 @@ export default {
           price: 0,
         },
       },
+      mealName: "",
     };
   },
   computed: {
@@ -117,6 +118,9 @@ export default {
     },
     isManagementFoodInMealModal() {
       this.refreshData();
+      this.getMealName(this.idCurrentMealOpenend).then((res) => {
+        this.mealName = res;
+      });
     },
   },
   methods: {
@@ -127,6 +131,7 @@ export default {
       "getAllFoodsByMeals",
       "modifyFoodsByMeals",
       "deleteOneFoodByMeal",
+      "getMealName",
     ]),
     closeModal() {
       this.managementFoodInMealModal(false);

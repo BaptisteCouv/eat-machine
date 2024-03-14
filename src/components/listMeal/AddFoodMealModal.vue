@@ -14,7 +14,7 @@
       </v-toolbar>
       <v-container>
         <DefaultTitle title="Nom dynamique" />
-        <ListMealCard :edit-mode="true" />
+        <ListMealCard :addable="true" />
       </v-container>
     </v-card>
   </v-dialog>

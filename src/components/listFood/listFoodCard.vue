@@ -22,7 +22,7 @@
       <MealDetailCard
         :nutritionalsData="food"
         :currentQuantity="quantityVariable"
-        :edit-mode="editMode"
+        :addable="addable"
         @delete-data="deleteData"
       />
     </div>
@@ -45,8 +45,21 @@ export default {
     };
   },
   props: {
-    editMode: {
+    editable: {
       type: Boolean,
+      default: false,
+    },
+    deletable: {
+      type: Boolean,
+      default: false,
+    },
+    addable: {
+      type: Boolean,
+      default: false,
+    },
+    reducedView: {
+      type: Boolean,
+      default: false,
     },
   },
   created() {

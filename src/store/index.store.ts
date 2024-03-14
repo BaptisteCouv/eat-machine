@@ -1,6 +1,10 @@
 import { createStore } from "vuex";
 
-import { getAllListMeals, addOneMeal } from "@/services/meals.services";
+import {
+  getAllListMeals,
+  addOneMeal,
+  getMealName,
+} from "@/services/meals.services";
 import {
   getAllListFoodsNutritionals,
   addOneFoodNutritional,
@@ -152,6 +156,14 @@ export default createStore({
     async addNewOneMeal({ commit }, meal) {
       try {
         await addOneMeal(meal);
+      } catch (error) {
+        console.error("Erreur lors de l'ajout du aliment");
+      }
+    },
+
+    async getMealName({ commit }, idMeal: string) {
+      try {
+        return await getMealName(idMeal);
       } catch (error) {
         console.error("Erreur lors de l'ajout du aliment");
       }

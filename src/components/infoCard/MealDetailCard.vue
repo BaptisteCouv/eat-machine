@@ -12,7 +12,7 @@
             v-if="addable"
             size="x-small"
             variant="outlined"
-            icon="mdi-plus-box-multiple"
+            icon="mdi-plus-thick"
             color="white"
             @click="addMeal(nutritionalsData._id)"
           ></v-btn>
@@ -103,7 +103,7 @@
             v-if="addable"
             size="x-small"
             variant="outlined"
-            icon="mdi-plus-box-multiple"
+            icon="mdi-plus-thick"
             color="white"
             @click="addMeal(nutritionalsData._id)"
           ></v-btn>
