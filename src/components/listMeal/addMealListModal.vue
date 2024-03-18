@@ -73,6 +73,17 @@
               Annuler
             </v-btn>
             <v-btn
+              v-if="Object.keys(currentMealOpen).length !== 0"
+              variant="flat"
+              color="primary"
+              class="btn-add px-12"
+              rounded="xl"
+              @click="changeMeal()"
+            >
+              Changer
+            </v-btn>
+            <v-btn
+              v-else
               variant="flat"
               color="primary"
               class="btn-add px-12"
@@ -130,8 +141,6 @@ export default {
         this.currentMealOpen &&
         Object.keys(this.currentMealOpen).length !== 0
       ) {
-        console.log("aaaaaaaa");
-
         this.formData = { ...this.formData, ...this.currentMealOpen };
 
         if (!this.tempCategorySelected) {
@@ -150,7 +159,7 @@ export default {
           )
           .map((category: ICategory) => category.name);
       } else {
-        console.log("bbbbbbbb");
+        // console.log("rajouter la date actuel dans le cahamp date");
       }
     },
   },
@@ -158,7 +167,11 @@ export default {
     ...mapGetters(["isManagementListMealModal"]),
   },
   methods: {
-    ...mapActions(["managementListMealModal", "addNewOneMeal"]),
+    ...mapActions([
+      "managementListMealModal",
+      "addNewOneMeal",
+      "changeOneMeal",
+    ]),
     closeListMealModal() {
       this.managementListMealModal(false);
       this.formData = {
@@ -173,21 +186,12 @@ export default {
       this.$emit("close-event");
     },
     addMealToList() {
-      if (this.formData && this.formData.idCategory) {
-        this.tempCategorySelected.forEach((element: any) => {
-          let temp = this.getListAllCategory.find(
-            (e: any) => e.name === element
-          );
-          if (temp) {
-            this.formData.idCategory.push(temp._id);
-          }
-        });
-      }
+      this.valid();
       this.addNewOneMeal(this.formData);
       this.closeListMealModal();
       this.$emit("some-event");
     },
-    convertDate(dateParams) {
+    convertDate(dateParams: string) {
       const date = new Date(dateParams);
 
       const day = date.getDate();
@@ -206,6 +210,27 @@ export default {
     },
     getNamesFromListAllCategory() {
       return this.getListAllCategory.map((item: any) => item.name);
+    },
+    valid() {
+      if (this.formData && this.formData.idCategory) {
+        console.log("before : ", this.formData.idCategory);
+        this.formData.idCategory = [];
+        this.tempCategorySelected.forEach((element: any) => {
+          let temp = this.getListAllCategory.find(
+            (e: any) => e.name === element
+          );
+          if (temp) {
+            this.formData.idCategory.push(temp._id);
+          }
+        });
+        console.log("after : ", this.formData.idCategory);
+      }
+    },
+    changeMeal() {
+      this.valid();
+      this.changeOneMeal(this.formData);
+      this.closeListMealModal();
+      this.$emit("some-event");
     },
   },
 };
