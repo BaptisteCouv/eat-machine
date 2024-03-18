@@ -10,7 +10,7 @@
         <v-btn icon dark @click="closeListMealModal()">
           <v-icon>mdi-chevron-left</v-icon>
         </v-btn>
-        <v-toolbar-title>Retour</v-toolbar-title>
+        <v-toolbar-title></v-toolbar-title>
       </v-toolbar>
       <v-container>
         <v-row>
@@ -44,7 +44,7 @@
                   @click="dialogVisible = true"
                 ></v-text-field>
               </template>
-              <v-date-picker v-model="formData.dateSelect"> 
+              <v-date-picker v-model="formData.dateSelect">
                 <v-btn color="primary" @click="dialogVisible = false">
                   Cancel
                 </v-btn>
@@ -91,6 +91,7 @@
 <script lang="ts">
 import { mapGetters, mapActions } from "vuex";
 import DefaultTitle from "@/components/default/DefaultTitle.vue";
+import { ICategory } from "@/models/category.models";
 
 export default {
   name: "addMealListModal",
@@ -107,14 +108,50 @@ export default {
         recurrence: false,
         dateSelect: null,
         idCategory: [] || null,
+        isActive: false,
       },
       tempCategorySelected: [],
     };
   },
   props: {
     getListAllCategory: {
-      type: Array,
+      type: Array as () => ICategory[],
       required: true,
+    },
+    currentMealOpen: {
+      type: Object,
+      required: false,
+    },
+  },
+  watch: {
+    isManagementListMealModal(): void {
+      if (
+        this.isManagementListMealModal &&
+        this.currentMealOpen &&
+        Object.keys(this.currentMealOpen).length !== 0
+      ) {
+        console.log("aaaaaaaa");
+
+        this.formData = { ...this.formData, ...this.currentMealOpen };
+
+        if (!this.tempCategorySelected) {
+          this.tempCategorySelected = [];
+        }
+
+        if (this.formData.dateSelect !== null) {
+          const currentDate = new Date(this.formData.dateSelect);
+          this.formData.dateSelect = currentDate;
+          this.textFieldDate = this.convertDate(currentDate);
+        }
+
+        this.tempCategorySelected = this.getListAllCategory
+          .filter((category: ICategory) =>
+            this.formData.idCategory.includes(category._id)
+          )
+          .map((category: ICategory) => category.name);
+      } else {
+        console.log("bbbbbbbb");
+      }
     },
   },
   computed: {
@@ -128,9 +165,12 @@ export default {
         recurrence: false,
         name: "",
         dateSelect: null,
-        idCategory: null,
+        idCategory: [],
+        isActive: false,
       };
+      this.tempCategorySelected = [];
       this.textFieldDate = "";
+      this.$emit("close-event");
     },
     addMealToList() {
       if (this.formData && this.formData.idCategory) {
@@ -143,15 +183,13 @@ export default {
           }
         });
       }
-      
       this.addNewOneMeal(this.formData);
       this.closeListMealModal();
       this.$emit("some-event");
     },
-    saveDate() {
-      if (!this.formData.dateSelect) return "";
+    convertDate(dateParams) {
+      const date = new Date(dateParams);
 
-      const date = new Date(this.formData.dateSelect);
       const day = date.getDate();
       const month = date.getMonth() + 1;
       const year = date.getFullYear();
@@ -159,7 +197,11 @@ export default {
       const formattedDay = day < 10 ? "0" + day : day;
       const formattedMonth = month < 10 ? "0" + month : month;
       const dateSelect = `${formattedDay}/${formattedMonth}/${year}`;
-      this.textFieldDate = dateSelect;
+      return dateSelect;
+    },
+    saveDate() {
+      if (!this.formData.dateSelect) return "";
+      this.textFieldDate = this.convertDate(this.formData.dateSelect);
       this.dialogVisible = false;
     },
     getNamesFromListAllCategory() {

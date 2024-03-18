@@ -1,5 +1,10 @@
 <template>
-  <AddMealListModal  @some-event="getCategory()" :getListAllCategory="getListAllCategory" />
+  <AddMealListModal
+    :getListAllCategory="getListAllCategory"
+    :currentMealOpen="currentMealOpen"
+    @some-event="getCategory()"
+    @close-event="resetCurrentMealOpen"
+  />
   <AddCategoryModal @some-event="getCategory()" />
 
   <v-container>
@@ -36,10 +41,20 @@
     </v-row>
     <v-row>
       <v-col cols="12">
-        <DefaultTitle title="Liste des repas & plats" />
+        <div class="d-flex align-center justify-space-between">
+          <DefaultTitle title="Liste des repas & plats" />
+          <v-btn
+            icon="mdi-pencil"
+            size="x-small"
+            variant="tonal"
+            @click="isEditing = !isEditing"
+          ></v-btn>
+        </div>
         <listMealCard
           :getListAllCategory="getAllCategoryOrderByHour"
           :getListAllMeals="getListAllMeals"
+          :isEditing="isEditing"
+          @openMealModal="openMealModal"
         />
       </v-col>
     </v-row>
@@ -65,6 +80,8 @@ export default {
   data() {
     return {
       getAllCategoryOrderByHour: [],
+      isEditing: false,
+      currentMealOpen: {},
     };
   },
   created() {
@@ -99,7 +116,6 @@ export default {
     },
 
     trierLesHeures(category: any) {
-
       category.sort((a: any, b: any) => {
         const heureA = a.mealTime;
         const heureB = b.mealTime;
@@ -108,6 +124,12 @@ export default {
       });
 
       this.getAllCategoryOrderByHour = category;
+    },
+    openMealModal(params: object) {
+      this.currentMealOpen = params;
+    },
+    resetCurrentMealOpen() {
+      this.currentMealOpen = [];
     },
   },
 };

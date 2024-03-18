@@ -1,5 +1,10 @@
 <template>
-  <MealCard :getListAllCategory="getListAllCategory" :getListAllMeals="getListAllMeals" />
+  <MealCard
+    :getListAllCategory="getListAllCategory"
+    :getListAllMeals="getListAllMeals"
+    :isEditing="isEditing"
+    @openMealModal="openMealModal"
+  />
 </template>
 
 <script lang="ts">
@@ -8,7 +13,7 @@ import MealCard from "@/components/listMeal/MealCard.vue";
 export default {
   name: "listMealCard",
   components: {
-    MealCard
+    MealCard,
   },
   props: {
     getListAllCategory: {
@@ -19,7 +24,16 @@ export default {
       type: Array,
       required: true,
     },
+    isEditing: {
+      type: Boolean,
+      required: true,
+    },
   },
+  methods: {
+    openMealModal(params: object) {
+      this.$emit("openMealModal", params)
+    }
+  }
 };
 </script>
 

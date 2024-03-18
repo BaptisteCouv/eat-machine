@@ -18,7 +18,12 @@
               <v-chip class="meal-card--time mr-2">
                 {{ category.mealTime }}
               </v-chip>
-              <v-btn icon="mdi-pencil" size="x-small" variant="tonal"></v-btn>
+              <v-btn
+                v-if="isEditing"
+                icon="mdi-pencil"
+                size="x-small"
+                variant="tonal"
+              ></v-btn>
             </div>
           </div>
         </div>
@@ -27,10 +32,16 @@
             <template v-for="idCategory in meal.idCategory" :key="idCategory">
               <v-col cols="12" class="py-1" v-if="idCategory === category._id">
                 <div
-                  class="card mx-4 pa-3"
-                  @click="openModalWithParam(true, meal._id)"
+                  class="card d-flex align-center justify-space-between mx-4 pa-3"
+                  :class="meal.isActive ? 'isActive' : ''"
+                  @click="actionClick(meal)"
                 >
-                  <div class="card-name">{{ meal.name }}</div>
+                  <div class="card-name">
+                    {{ meal.name }}
+                  </div>
+                  <v-icon v-if="isEditing">mdi-pencil</v-icon>
+                  <v-icon v-else-if="meal.recurrence">mdi-reload</v-icon>
+                  <v-icon v-else>mdi-calendar-clock</v-icon>
                 </div>
               </v-col>
             </template>
@@ -60,6 +71,10 @@ export default {
       type: Array,
       required: true,
     },
+    isEditing: {
+      type: Boolean,
+      required: true,
+    },
   },
 
   data() {
@@ -70,10 +85,21 @@ export default {
       "managementFoodInMealModal",
       "getAllFoodsByMeals",
       "addIdCurrentMealOpenend",
+      "managementListMealModal",
     ]),
-
-    openModalWithParam(isOpen: boolean, idMeal: string) {
-      this.managementFoodInMealModal(isOpen);
+    actionClick(params: any) {      
+      if (this.isEditing) {
+        this.managementListMealModal(true);
+        this.$emit("openMealModal", params)
+      } else {
+        this.openModalWithParam(params._id);
+      }
+    },
+    openEditModalMeal() {
+      this.managementFoodInMealModal(true);
+    },
+    openModalWithParam(idMeal: string) {
+      this.managementFoodInMealModal(true);
       this.addIdCurrentMealOpenend(idMeal);
     },
   },
@@ -86,7 +112,7 @@ export default {
     color: #333146;
   }
   &--name {
-    color: #56dd65;
+    color: #4d8f55;
     font-size: 20px;
     font-weight: 300;
     text-overflow: ellipsis;
@@ -106,12 +132,21 @@ export default {
     .card {
       background-color: #fff;
       border-radius: 8px;
+      font-size: 13px;
       .card-name {
         color: #29252c;
-        font-size: 13px;
         font-weight: 600;
       }
     }
+  }
+}
+
+.isActive {
+  background-color: rgba($color: #4d8f55, $alpha: 0.6) !important;
+  color: white;
+  .card-name {
+    color: white !important;
+    font-weight: 600;
   }
 }
 </style>
