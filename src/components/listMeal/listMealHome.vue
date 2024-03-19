@@ -43,17 +43,27 @@
       <v-col cols="12">
         <div class="d-flex align-center justify-space-between">
           <DefaultTitle title="Liste des repas & plats" />
-          <v-btn
-            icon="mdi-pencil"
-            size="x-small"
-            variant="tonal"
-            @click="isEditing = !isEditing"
-          ></v-btn>
+          <div>
+            <v-btn
+              icon="mdi-pencil"
+              size="x-small"
+              variant="tonal"
+              @click="changeModeEdit"
+            ></v-btn>
+            <v-btn
+              icon="mdi-trash-can-outline"
+              size="x-small"
+              variant="tonal"
+              class="ml-2"
+              @click="changeModeDelete"
+            ></v-btn>
+          </div>
         </div>
         <listMealCard
           :getListAllCategory="getAllCategoryOrderByHour"
           :getListAllMeals="getListAllMeals"
           :isEditing="isEditing"
+          :isDeleting="isDeleting"
           @openMealModal="openMealModal"
         />
       </v-col>
@@ -81,6 +91,7 @@ export default {
     return {
       getAllCategoryOrderByHour: [],
       isEditing: false,
+      isDeleting: false,
       currentMealOpen: {},
     };
   },
@@ -125,11 +136,27 @@ export default {
 
       this.getAllCategoryOrderByHour = category;
     },
-    openMealModal(params: object) {
-      this.currentMealOpen = params;
+    openMealModal(params: any) {
+      if (params.refresh) {
+        this.getCategory();
+      } else {
+        this.currentMealOpen = params;
+      }
     },
     resetCurrentMealOpen() {
       this.currentMealOpen = [];
+    },
+    changeModeEdit() {
+      this.isEditing = !this.isEditing;
+      if (this.isDeleting) {
+        this.isDeleting = false;
+      }
+    },
+    changeModeDelete() {
+      this.isDeleting = !this.isDeleting;
+      if (this.isEditing) {
+        this.isEditing = false;
+      }
     },
   },
 };

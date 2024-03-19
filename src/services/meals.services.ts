@@ -21,3 +21,8 @@ export async function changeOneMeal(mealBody: any) {
   });
   return response.data;
 }
+
+export async function deleteOneMeal(id: string) {
+  const response = await axios.delete("/api/meals/" + id);
+  return response.data;
+}

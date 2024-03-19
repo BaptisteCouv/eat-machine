@@ -5,6 +5,7 @@ import {
   addOneMeal,
   getMealName,
   changeOneMeal,
+  deleteOneMeal
 } from "@/services/meals.services";
 import {
   getAllListFoodsNutritionals,
@@ -173,6 +174,14 @@ export default createStore({
     async changeOneMeal({ commit }, mealBody: any ) {
       try {
         await changeOneMeal(mealBody);
+      } catch (error) {
+        console.error("Erreur lors de l'ajout du aliment");
+      }
+    },
+
+    async deleteOneMeal({ commit }, mealId: string ) {
+      try {
+        await deleteOneMeal(mealId);
       } catch (error) {
         console.error("Erreur lors de l'ajout du aliment");
       }

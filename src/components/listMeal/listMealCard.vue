@@ -3,6 +3,7 @@
     :getListAllCategory="getListAllCategory"
     :getListAllMeals="getListAllMeals"
     :isEditing="isEditing"
+    :isDeleting="isDeleting"
     @openMealModal="openMealModal"
   />
 </template>
@@ -25,6 +26,10 @@ export default {
       required: true,
     },
     isEditing: {
+      type: Boolean,
+      required: true,
+    },
+    isDeleting: {
       type: Boolean,
       required: true,
     },

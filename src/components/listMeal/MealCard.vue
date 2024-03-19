@@ -40,6 +40,7 @@
                     {{ meal.name }}
                   </div>
                   <v-icon v-if="isEditing">mdi-pencil</v-icon>
+                  <v-icon v-else-if="isDeleting">mdi-trash-can-outline</v-icon>
                   <v-icon v-else-if="meal.recurrence">mdi-reload</v-icon>
                   <v-icon v-else>mdi-calendar-clock</v-icon>
                 </div>
@@ -75,6 +76,10 @@ export default {
       type: Boolean,
       required: true,
     },
+    isDeleting: {
+      type: Boolean,
+      required: true,
+    },
   },
 
   data() {
@@ -86,11 +91,19 @@ export default {
       "getAllFoodsByMeals",
       "addIdCurrentMealOpenend",
       "managementListMealModal",
+      "deleteOneMeal",
     ]),
-    actionClick(params: any) {      
+    actionClick(params: any) {
       if (this.isEditing) {
         this.managementListMealModal(true);
-        this.$emit("openMealModal", params)
+        this.$emit("openMealModal", params);
+      } else if (this.isDeleting) {
+        this.deleteOneMeal(params._id);
+        // Permet d'actualiser les category et les plats en passant un paramètre refresh a true
+        const param = {
+          refresh: true,
+        };
+        this.$emit("openMealModal", param);
       } else {
         this.openModalWithParam(params._id);
       }
