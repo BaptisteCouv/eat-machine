@@ -213,7 +213,6 @@ export default {
     },
     valid() {
       if (this.formData && this.formData.idCategory) {
-        console.log("before : ", this.formData.idCategory);
         this.formData.idCategory = [];
         this.tempCategorySelected.forEach((element: any) => {
           let temp = this.getListAllCategory.find(
@@ -223,7 +222,6 @@ export default {
             this.formData.idCategory.push(temp._id);
           }
         });
-        console.log("after : ", this.formData.idCategory);
       }
     },
     changeMeal() {

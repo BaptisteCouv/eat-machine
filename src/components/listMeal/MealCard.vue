@@ -16,13 +16,21 @@
             <div class="name">{{ category.name }}</div>
             <div class="d-flex">
               <v-chip class="meal-card--time mr-2">
-                {{ category.mealTime }}
+                {{ formatTime(category.mealTime) }}
               </v-chip>
               <v-btn
                 v-if="isEditing"
                 icon="mdi-pencil"
                 size="x-small"
                 variant="tonal"
+                @click="actionClick(category, true)"
+              ></v-btn>
+              <v-btn
+                v-if="isDeleting"
+                icon="mdi-trash-can-outline"
+                size="x-small"
+                variant="tonal"
+                @click="actionClick(category, true)"
               ></v-btn>
             </div>
           </div>
@@ -34,7 +42,7 @@
                 <div
                   class="card d-flex align-center justify-space-between mx-4 pa-3"
                   :class="meal.isActive ? 'isActive' : ''"
-                  @click="actionClick(meal)"
+                  @click="actionClick(meal, false)"
                 >
                   <div class="card-name">
                     {{ meal.name }}
@@ -42,10 +50,44 @@
                   <v-icon v-if="isEditing">mdi-pencil</v-icon>
                   <v-icon v-else-if="isDeleting">mdi-trash-can-outline</v-icon>
                   <v-icon v-else-if="meal.recurrence">mdi-reload</v-icon>
-                  <v-icon v-else>mdi-calendar-clock</v-icon>
+                  <v-icon v-else-if="meal.dateSelect">
+                    mdi-calendar-clock
+                  </v-icon>
                 </div>
               </v-col>
             </template>
+          </v-row>
+        </v-sheet>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12" class="list-categorie">
+        <div class="mb-2">
+          <div
+            class="meal-card--name mx-0 d-flex justify-space-between align-end"
+          >
+            <div class="name">Tous les plats</div>
+          </div>
+        </div>
+        <v-sheet class="meal-card--body pb-6 pt-6">
+          <v-row v-for="(meal, ii) in getListAllMeals" :key="ii">
+            <v-col cols="12" class="py-1">
+              <div
+                class="card d-flex align-center justify-space-between mx-4 pa-3"
+                :class="meal.isActive ? 'isActive' : ''"
+                @click="actionClick(meal, false)"
+              >
+                <div class="card-name">
+                  {{ meal.name }}
+                </div>
+                <v-icon v-if="isEditing">mdi-pencil</v-icon>
+                <v-icon v-else-if="isDeleting">mdi-trash-can-outline</v-icon>
+                <v-icon v-else-if="meal.recurrence">mdi-reload</v-icon>
+                <v-icon v-else-if="meal.dateSelect">
+                  mdi-calendar-clock
+                </v-icon>
+              </div>
+            </v-col>
           </v-row>
         </v-sheet>
       </v-col>
@@ -55,6 +97,7 @@
 
 <script lang="ts">
 import ListFoodInMealModal from "@/components/listMeal/ListFoodInMealModal.vue";
+import { log } from "console";
 
 import { mapActions } from "vuex";
 
@@ -91,15 +134,41 @@ export default {
       "getAllFoodsByMeals",
       "addIdCurrentMealOpenend",
       "managementListMealModal",
+      "managementCategoryModal",
       "deleteOneMeal",
+      "listEditCurrentCategory",
+      "deleteOneCategory",
+      "changeOneMeal",
     ]),
-    actionClick(params: any) {
+    async actionClick(params: any, isCategory: boolean) {
       if (this.isEditing) {
-        this.managementListMealModal(true);
-        this.$emit("openMealModal", params);
+        if (isCategory) {
+          this.managementCategoryModal(true);
+          this.listEditCurrentCategory(params);
+        } else {
+          this.$emit("openMealModal", params);
+          this.managementListMealModal(true);
+        }
       } else if (this.isDeleting) {
-        this.deleteOneMeal(params._id);
-        // Permet d'actualiser les category et les plats en passant un paramètre refresh a true
+        if (isCategory) {
+          this.getListAllMeals.forEach(async (element: any) => {
+            let idCategory = element.idCategory.find(
+              (e: any) => e === params._id
+            );
+            if (idCategory && idCategory === params._id) {
+              for (let i = element.idCategory.length - 1; i >= 0; i--) {
+                if (element.idCategory[i] === idCategory) {
+                  element.idCategory.splice(i, 1); // Supprime l'élément à l'index i
+                }
+              }
+            }
+            await this.changeOneMeal(element);
+          });
+
+          this.deleteOneCategory();
+        } else {
+          this.deleteOneMeal(params._id);
+        }
         const param = {
           refresh: true,
         };
@@ -114,6 +183,11 @@ export default {
     openModalWithParam(idMeal: string) {
       this.managementFoodInMealModal(true);
       this.addIdCurrentMealOpenend(idMeal);
+    },
+    formatTime(value: number) {
+      const hours = Math.floor(value);
+      const minutes = (value % 1) * 60;
+      return `${hours}:${String(minutes).padStart(2, "0")}`;
     },
   },
 };

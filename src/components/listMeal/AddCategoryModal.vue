@@ -18,13 +18,13 @@
         <v-row>
           <v-col cols="12" class="pb-0">
             <v-text-field
-              v-model="FormData.name"
+              v-model="formData.name"
               label="Nom du repas"
             ></v-text-field>
             <div class="title-hour">heure du repas</div>
-            <div class="hour">{{ formatTime(selectedHour) }} h</div>
+            <div class="hour">{{ formatTime(formData.mealTime) }} h</div>
             <v-slider
-              v-model="selectedHour"
+              v-model="formData.mealTime"
               :min="0"
               :max="24"
               :step="0.5"
@@ -43,7 +43,19 @@
             >
               Annuler
             </v-btn>
+
             <v-btn
+              v-if="Object.keys(getListEditCurrentCategory).length !== 0"
+              variant="flat"
+              color="primary"
+              class="btn-add px-12"
+              rounded="xl"
+              @click="changeCategoryData()"
+            >
+              Changer
+            </v-btn>
+            <v-btn
+              v-else
               variant="flat"
               color="primary"
               class="btn-add px-12"
@@ -73,29 +85,41 @@ export default {
   },
   data() {
     return {
-      selectedHour: 12,
-      FormData: {
+      formData: {
         name: "",
-        mealTime: null,
+        mealTime: 12,
       } as ICategory,
     };
   },
+  watch: {
+    isManagementCategoryModal() {
+      if (Object.keys(this.getListEditCurrentCategory).length !== 0)
+        this.formData = this.getListEditCurrentCategory;
+    },
+  },
   computed: {
-    ...mapGetters(["isManagementCategoryModal"]),
+    ...mapGetters(["isManagementCategoryModal", "getListEditCurrentCategory"]),
   },
   methods: {
-    ...mapActions(["managementCategoryModal", "addNewOneCategory"]),
+    ...mapActions([
+      "managementCategoryModal",
+      "addNewOneCategory",
+      "modifyCategory",
+    ]),
     closeCategoryModal() {
       this.managementCategoryModal(false);
-      this.FormData = {
+      this.formData = {
         name: "",
-        mealTime: null,
+        mealTime: 12,
       };
-      this.selectedHour = 12;
     },
     addCategoryToList() {
-      this.FormData.mealTime = this.formatTime(this.selectedHour);
-      this.addNewOneCategory(this.FormData);
+      this.addNewOneCategory(this.formData);
+      this.closeCategoryModal();
+      this.$emit("some-event");
+    },
+    changeCategoryData() {
+      this.modifyCategory(this.formData);
       this.closeCategoryModal();
       this.$emit("some-event");
     },

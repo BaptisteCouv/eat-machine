@@ -1,5 +1,5 @@
 export interface ICategory {
-  _id: string;
+  _id?: string;
   name: string;
-  mealTime?: string | null;
+  mealTime?: number;
 }

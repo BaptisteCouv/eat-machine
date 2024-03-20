@@ -5,7 +5,7 @@ import {
   addOneMeal,
   getMealName,
   changeOneMeal,
-  deleteOneMeal
+  deleteOneMeal,
 } from "@/services/meals.services";
 import {
   getAllListFoodsNutritionals,
@@ -16,6 +16,8 @@ import {
 import {
   getAllListCategory,
   addOneCategory,
+  modifyCategory,
+  deleteOneCategory
 } from "@/services/category.services";
 import {
   getAllFoodsByMeals,
@@ -36,6 +38,7 @@ export default createStore({
     showAddFoodInMealModal: false,
     showAddCategoryModal: false,
     idCurrentMealOpenend: "",
+    listEditCurrentCategory: {},
     listAllMeals: {},
     listAllFoods: {},
     listAllCategory: {},
@@ -59,6 +62,9 @@ export default createStore({
     },
     addIdCurrentMealOpenend(state, id) {
       state.idCurrentMealOpenend = id;
+    },
+    listEditCurrentCategory(state, listEditCurrentCategory) {
+      state.listEditCurrentCategory = listEditCurrentCategory;
     },
     listAllMeals(state, listAllMeals) {
       state.listAllMeals = listAllMeals;
@@ -85,6 +91,9 @@ export default createStore({
     },
     managementAddFoodInMealModal({ commit }, params) {
       commit("managementAddFoodInMealModal", params);
+    },
+    listEditCurrentCategory({ commit }, params) {
+      commit("listEditCurrentCategory", params);
     },
     managementCategoryModal({ commit }, params) {
       commit("managementCategoryModal", params);
@@ -144,6 +153,23 @@ export default createStore({
       }
     },
 
+    async modifyCategory({ commit }, category) {
+      try {
+        await modifyCategory(category);
+      } catch (error) {
+        console.error("Erreur lors de l'ajout du aliment");
+      }
+    },
+
+    async deleteOneCategory({ commit }, categoryId: string) {
+      try {
+        await deleteOneCategory(categoryId);
+      } catch (error) {
+        console.error("Erreur lors de l'ajout du aliment");
+      }
+    },
+
+
     // MEALS --------------------------------------------------
     async getAllMeals({ commit }) {
       try {
@@ -171,7 +197,7 @@ export default createStore({
       }
     },
 
-    async changeOneMeal({ commit }, mealBody: any ) {
+    async changeOneMeal({ commit }, mealBody: any) {
       try {
         await changeOneMeal(mealBody);
       } catch (error) {
@@ -179,7 +205,7 @@ export default createStore({
       }
     },
 
-    async deleteOneMeal({ commit }, mealId: string ) {
+    async deleteOneMeal({ commit }, mealId: string) {
       try {
         await deleteOneMeal(mealId);
       } catch (error) {
@@ -257,6 +283,7 @@ export default createStore({
     isManagementAddFoodInMealModal: (state) => state.showAddFoodInMealModal,
     isManagementCategoryModal: (state) => state.showAddCategoryModal,
     isAddIdCurrentMealOpenend: (state) => state.idCurrentMealOpenend,
+    getListEditCurrentCategory: (state) => state.listEditCurrentCategory,
     getListAllMeals: (state) => state.listAllMeals,
     getListAllFoods: (state) => state.listAllFoods,
     getListAllCategory: (state) => state.listAllCategory,

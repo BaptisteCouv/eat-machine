@@ -1,7 +1,7 @@
 <template>
   <AddMealListModal
     :getListAllCategory="getListAllCategory"
-    :currentMealOpen="currentMealOpen"
+    :currentMealOpen="currentDataOpen"
     @some-event="getCategory()"
     @close-event="resetCurrentMealOpen"
   />
@@ -92,7 +92,7 @@ export default {
       getAllCategoryOrderByHour: [],
       isEditing: false,
       isDeleting: false,
-      currentMealOpen: {},
+      currentDataOpen: {},
     };
   },
   created() {
@@ -140,11 +140,11 @@ export default {
       if (params.refresh) {
         this.getCategory();
       } else {
-        this.currentMealOpen = params;
+        this.currentDataOpen = params;
       }
     },
     resetCurrentMealOpen() {
-      this.currentMealOpen = [];
+      this.currentDataOpen = {};
     },
     changeModeEdit() {
       this.isEditing = !this.isEditing;
