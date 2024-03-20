@@ -127,14 +127,11 @@ export default {
     },
 
     trierLesHeures(category: any) {
-      category.sort((a: any, b: any) => {
-        const heureA = a.mealTime;
-        const heureB = b.mealTime;
-
-        return heureA.localeCompare(heureB);
+      let categoryBis = category;
+      categoryBis.sort((a: any, b: any) => {
+        return parseInt(a.mealTime) - parseInt(b.mealTime);
       });
-
-      this.getAllCategoryOrderByHour = category;
+      this.getAllCategoryOrderByHour = categoryBis;
     },
     openMealModal(params: any) {
       if (params.refresh) {
