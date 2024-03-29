@@ -165,7 +165,7 @@ export default {
             await this.changeOneMeal(element);
           });
 
-          this.deleteOneCategory();
+          this.deleteOneCategory(params._id);
         } else {
           this.deleteOneMeal(params._id);
         }

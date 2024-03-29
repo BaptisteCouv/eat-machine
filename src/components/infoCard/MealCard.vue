@@ -1,7 +1,7 @@
 <template>
   <v-sheet class="meal-card">
-    <DefaultTitle :title="myTitle" />
-    <div class="meal-card--body pt-2">
+    <div class="meal-card--body pt-2 mb-2">
+      <div class="title-meal">{{ meal.name }}</div>
       <v-container>
         <v-row class="meal-card-body--info">
           <v-col cols="4" class="d-flex align-center flex-column">
@@ -9,21 +9,27 @@
               <v-icon>mdi-food-drumstick-outline</v-icon>
             </div>
             <div class="meal-card-body--title">Protéines</div>
-            <div class="meal-card-body--total">53</div>
+            <div class="meal-card-body--total">
+              {{ totalAllData.foodBindValue.protein }}
+            </div>
           </v-col>
           <v-col cols="4" class="d-flex align-center flex-column">
             <div class="meal-card-body--icon">
               <v-icon>mdi-barley</v-icon>
             </div>
             <div class="meal-card-body--title">Glucides</div>
-            <div class="meal-card-body--total">123</div>
+            <div class="meal-card-body--total">
+              {{ totalAllData.foodBindValue.carbohydrates }}
+            </div>
           </v-col>
           <v-col cols="4" class="d-flex align-center flex-column">
             <div class="meal-card-body--icon">
               <v-icon>mdi-lightning-bolt-outline</v-icon>
             </div>
             <div class="meal-card-body--title">Lipides</div>
-            <div class="meal-card-body--total">17</div>
+            <div class="meal-card-body--total">
+              {{ totalAllData.foodBindValue.lipid }}
+            </div>
           </v-col>
         </v-row>
         <v-row class="meal-card-body--recap">
@@ -32,7 +38,9 @@
               class="meal-card-body--circle d-flex align-center justify-center flex-column"
             >
               <div class="meal-card-body--icon"><v-icon>mdi-fire</v-icon></div>
-              <div class="meal-card-body--total">1562</div>
+              <div class="meal-card-body--total">
+                {{ totalAllData.foodBindValue.calories }}
+              </div>
               <div class="meal-card-body--title">Calories</div>
             </div>
           </v-col>
@@ -50,34 +58,94 @@
         </v-row>
       </v-container>
     </div>
+    <v-expand-transition>
+      <div v-if="isOpen">
+        <template v-for="mealChild in foodByMeal" :key="mealChild">
+          <MealDetailCard
+            :nutritionalsData="mealChild.foodBindValue"
+            :currentQuantity="mealChild.quantity"
+            :reduced-view="true"
+          />
+        </template>
+      </div>
+    </v-expand-transition>
   </v-sheet>
-  <v-expand-transition>
-    <div v-if="isOpen">
-      <MealDetailCard />
-    </div>
-  </v-expand-transition>
 </template>
 
 <script lang="ts">
-import DefaultTitle from "@/components/default/DefaultTitle.vue";
+import { ICategory } from "@/models/category.models";
 import MealDetailCard from "@/components/infoCard/MealDetailCard.vue";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "MealCard",
-  components: {
-    DefaultTitle,
-    MealDetailCard,
-  },
-
+  components: { MealDetailCard },
   data() {
     return {
-      myTitle: "Oui baguetee",
       isOpen: false,
+      totalAllData: {
+        quantity: 0,
+        foodBindValue: {
+          name: "Total",
+          unitMeasurement: false,
+          calories: 0,
+          protein: 0,
+          lipid: 0,
+          carbohydrates: 0,
+          price: 0,
+        },
+      },
+      foodByMeal: {},
     };
   },
+  created() {
+    this.getListFoodOfMeal();
+  },
+  computed: {
+    ...mapState({
+      listFood: (state: any) => state.listFoodsByMeals,
+    }),
+  },
+  props: {
+    meal: {
+      type: Array as () => ICategory[],
+      required: true,
+    },
+  },
   methods: {
+    ...mapActions(["getAllFoodsByMeals"]),
     displayDetail() {
       this.isOpen = !this.isOpen;
+    },
+    async getListFoodOfMeal() {
+      await this.getAllFoodsByMeals(this.meal._id).then(() => {
+        this.foodByMeal = this.listFood;
+
+        let total = {
+          quantity: 0,
+          foodBindValue: {
+            name: "Total",
+            unitMeasurement: false,
+            calories: 0,
+            protein: 0,
+            lipid: 0,
+            carbohydrates: 0,
+            price: 0,
+          },
+        };
+
+        this.listFood.forEach((element: any) => {
+          total.quantity += element.quantity;
+          total.foodBindValue.calories += element.foodBindValue.calories;
+          total.foodBindValue.protein += element.foodBindValue.protein;
+          total.foodBindValue.lipid += element.foodBindValue.lipid;
+          total.foodBindValue.carbohydrates +=
+            element.foodBindValue.carbohydrates;
+          total.foodBindValue.price += element.foodBindValue.price;
+        });
+
+        this.totalAllData = total;
+      });
     },
   },
 };
@@ -99,7 +167,7 @@ export default {
     border-radius: 8px;
     .meal-card-body--info {
       .meal-card-body--icon {
-        color: #56dd65;
+        color: #4d8f55;
       }
       .meal-card-body--title {
         color: #333146;
@@ -122,7 +190,7 @@ export default {
         border-radius: 50%;
       }
       .meal-card-body--icon {
-        color: #56dd65;
+        color: #4d8f55;
         font-size: 36px;
       }
       .meal-card-body--title {
@@ -146,5 +214,11 @@ export default {
       line-height: normal;
     }
   }
+}
+.title-meal {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 600;
+  color: #4d8f55;
 }
 </style>

@@ -31,11 +31,16 @@
         </v-row>
       </v-col>
     </v-row>
-    <v-row>
-      <v-col cols="12">
-        <MealCard />
-      </v-col>
-    </v-row>
+    <template v-for="(category, i) in getAllCategoryOrderByHour" :key="i">
+      <v-row v-if="category.isActive">
+        <v-col cols="12">
+          <DefaultTitle :title="category.name" />
+          <template v-for="(meal, ii) in category.meals" :key="ii">
+            <MealCard :meal="meal" />
+          </template>
+        </v-col>
+      </v-row>
+    </template>
   </v-container>
 </template>
 
@@ -43,19 +48,54 @@
 import MealCard from "@/components/infoCard/MealCard.vue";
 import DefaultTitle from "@/components/default/DefaultTitle.vue";
 
+import { mapGetters, mapActions } from "vuex";
+
 export default {
   name: "Homepage",
   components: {
     MealCard,
     DefaultTitle,
   },
+  data() {
+    return {
+      getAllCategoryOrderByHour: [],
+    };
+  },
+  created() {
+    this.getCategory();
+  },
+  computed: {
+    ...mapGetters(["getListAllCategory", "getListAllMeals"]),
+  },
   methods: {
+    ...mapActions(["getAllCategory", "getAllMeals"]),
+    async getCategory() {
+      await this.getAllCategory().then(() => {
+        this.getAllMeals().then(() => {
+          this.trierLesHeures(this.getListAllCategory);
+        });
+      });
+    },
+    trierLesHeures(categorys: any) {
+      const categorizedMeals = categorys.map((category: any) => {
+        const relatedMeals = this.getListAllMeals.filter((meal: any) =>
+          meal.idCategory.includes(category._id)
+        );
+        const isActive = relatedMeals.some((meal: any) => meal.isActive); // Check if any meal is active
+        return { ...category, meals: relatedMeals, isActive };
+      });
+      let categoryBis = categorizedMeals;
+      categoryBis.sort((a: any, b: any) => {
+        return parseInt(a.mealTime) - parseInt(b.mealTime);
+      });
+      this.getAllCategoryOrderByHour = categoryBis;
+    },
     goToListFood() {
       this.$router.push("/listFood");
     },
     goToListMeal() {
       this.$router.push("/listMeal");
-    }
+    },
   },
 };
 </script>

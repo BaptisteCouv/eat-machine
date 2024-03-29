@@ -35,7 +35,6 @@
               :nutritionalsData="totalAllData.foodBindValue"
               :currentQuantity="totalAllData.quantity"
               :currentIdBind="totalAllData.idFoodBind"
-              :edit-mode="false"
               @change-quantite="changeValueData"
             />
           </v-col>
@@ -47,7 +46,6 @@
                 :nutritionalsData="food.foodBindValue"
                 :currentQuantity="food.quantity"
                 :currentIdBind="food.idFoodBind"
-                :edit-mode="true"
                 :reduced-view="true"
                 :deletable="true"
                 :editable="true"
