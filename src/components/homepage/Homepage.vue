@@ -48,6 +48,8 @@
 import MealCard from "@/components/infoCard/MealCard.vue";
 import DefaultTitle from "@/components/default/DefaultTitle.vue";
 
+import { ICategory } from "@/models/category.models";
+
 import { mapGetters, mapActions } from "vuex";
 
 export default {
@@ -58,8 +60,8 @@ export default {
   },
   data() {
     return {
-      getAllCategoryOrderByHour: [],
-    };
+      getAllCategoryOrderByHour: [] as ICategory[],
+    }; 
   },
   created() {
     this.getCategory();

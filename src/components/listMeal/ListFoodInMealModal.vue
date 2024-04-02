@@ -15,7 +15,6 @@
         <v-toolbar-title>{{ mealName }}</v-toolbar-title>
       </v-toolbar>
       <v-container>
-        <!-- <DefaultTitle :title="mealName" /> -->
         <v-row class="mt-2">
           <v-col cols="12" class="pt-0 d-flex justify-end">
             <v-btn
@@ -61,9 +60,10 @@
 </template>
 
 <script lang="ts">
-import DefaultTitle from "@/components/default/DefaultTitle.vue";
 import AddFoodMealModal from "@/components/listMeal/AddFoodMealModal.vue";
 import MealDetailCard from "@/components/infoCard/MealDetailCard.vue";
+
+import { IFoodsByMeal } from "@/models/foodsByMeal.models";
 
 import { mapGetters, mapActions, mapState } from "vuex";
 
@@ -71,7 +71,6 @@ export default {
   name: "ListFoodInMealModal",
 
   components: {
-    DefaultTitle,
     AddFoodMealModal,
     MealDetailCard,
   },
@@ -80,8 +79,8 @@ export default {
       textFieldDate: "",
       formData: [],
       currentFoodSelect: [],
-      tempData: [],
-      originalTempData: [],
+      tempData: [] as any,
+      originalTempData: [] as any,
       totalAllData: {
         quantity: 0,
         foodBindValue: {
@@ -93,7 +92,7 @@ export default {
           carbohydrates: 0,
           price: 0,
         },
-      },
+      } as IFoodsByMeal,
       mealName: "",
     };
   },
@@ -170,7 +169,9 @@ export default {
     calcultotalData() {
       let total = {
         quantity: 0,
+        idFoodBind: "",
         foodBindValue: {
+          _id: "",
           name: "Total",
           unitMeasurement: false,
           calories: 0,
@@ -181,7 +182,7 @@ export default {
         },
       };
 
-      this.tempData.forEach((element) => {
+      this.tempData.forEach((element: any) => {
         total.quantity += element.quantity;
         total.foodBindValue.calories += element.foodBindValue.calories;
         total.foodBindValue.protein += element.foodBindValue.protein;
@@ -220,7 +221,7 @@ export default {
             JSON.stringify(this.originalTempData[index].foodBindValue)
           );
 
-          const calculateNutritionalValues = (value) =>
+          const calculateNutritionalValues = (value: any) =>
             parseFloat(((quantity / GRAM_TO_PERCENTAGE) * value).toFixed(1));
 
           this.tempData[index].foodBindValue.calories =
@@ -259,7 +260,7 @@ export default {
             JSON.stringify(this.originalTempData[index].foodBindValue)
           );
 
-          let quantity;
+          let quantity:number;
           if (quantiteChange) {
             quantity = quantiteChange;
           } else {
@@ -267,7 +268,7 @@ export default {
           }
 
           // Fonction pour calculer les valeurs nutritionnelles
-          const calculateNutritionalValues = (value) =>
+          const calculateNutritionalValues = (value: any) =>
             parseFloat(((quantity / GRAM_TO_PERCENTAGE) * value).toFixed(1));
 
           this.tempData[index].foodBindValue.calories =

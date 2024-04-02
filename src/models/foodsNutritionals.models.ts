@@ -1,5 +1,5 @@
 export interface IFoodsNutritionals {
-  id: string;
+  _id: string;
   name: string;
   unitMeasurement?: boolean;
   calories?: number;

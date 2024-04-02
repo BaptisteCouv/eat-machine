@@ -102,6 +102,7 @@
 <script lang="ts">
 import { mapGetters, mapActions } from "vuex";
 import DefaultTitle from "@/components/default/DefaultTitle.vue";
+
 import { ICategory } from "@/models/category.models";
 
 export default {
@@ -113,15 +114,9 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      textFieldDate: "",
-      formData: {
-        name: "",
-        recurrence: false,
-        dateSelect: null,
-        idCategory: [] || null,
-        isActive: false,
-      },
-      tempCategorySelected: [],
+      textFieldDate: "" as string,
+      formData: {} as any,
+      tempCategorySelected: [] as any,
     };
   },
   props: {
@@ -130,7 +125,7 @@ export default {
       required: true,
     },
     currentMealOpen: {
-      type: Object,
+      type: Object as () => any,
       required: false,
     },
   },
@@ -148,9 +143,11 @@ export default {
         }
 
         if (this.formData.dateSelect !== null) {
-          const currentDate = new Date(this.formData.dateSelect);
-          this.formData.dateSelect = currentDate;
-          this.textFieldDate = this.convertDate(currentDate);
+          const currentDate: any = new Date(this.formData.dateSelect);
+          if (this.formData && this.formData.dateSelect) {
+            this.formData.dateSelect = currentDate;
+            this.textFieldDate = this.convertDate(currentDate);
+          }
         }
 
         this.tempCategorySelected = this.getListAllCategory

@@ -35,7 +35,7 @@ import DefaultTitle from "@/components/default/DefaultTitle.vue";
 import ListMealCard from "@/components/listFood/listFoodCard.vue";
 import addFoodListModal from "@/components/listFood/addFoodListModal.vue";
 
-import { mapGetters, mapActions } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   name: "listFoodHome",
@@ -51,7 +51,7 @@ export default {
       this.managementListFoodModal(isOpen);
     },
     handleEventFromChild() {
-      //
+      // tempo
     },
 
   },

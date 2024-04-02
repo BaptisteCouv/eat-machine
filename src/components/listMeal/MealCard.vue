@@ -97,7 +97,8 @@
 
 <script lang="ts">
 import ListFoodInMealModal from "@/components/listMeal/ListFoodInMealModal.vue";
-import { log } from "console";
+import { ICategory } from "@/models/category.models";
+import { IMeals } from "@/models/meals.models";
 
 import { mapActions } from "vuex";
 
@@ -108,11 +109,11 @@ export default {
   },
   props: {
     getListAllCategory: {
-      type: Array,
+      type: Object as () => ICategory[],
       required: true,
     },
     getListAllMeals: {
-      type: Array,
+      type: Object as () => IMeals[],
       required: true,
     },
     isEditing: {
