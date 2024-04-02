@@ -17,7 +17,7 @@ import {
   getAllListCategory,
   addOneCategory,
   modifyCategory,
-  deleteOneCategory
+  deleteOneCategory,
 } from "@/services/category.services";
 import {
   getAllFoodsByMeals,
@@ -169,7 +169,6 @@ export default createStore({
       }
     },
 
-
     // MEALS --------------------------------------------------
     async getAllMeals({ commit }) {
       try {
@@ -231,43 +230,43 @@ export default createStore({
         console.error("Erreur lors de l'ajout du aliment");
       }
     },
-
-    async getOneFoodsNutritionalsByFoodBinds({ commit }, idMeal: any) {
-      console.log("2A");
-      try {
-        const data: IFoodsNutritionals[] =
-          await getOneFoodsNutritionalsByFoodBinds(idMeal);
-        let newData: IFoodsNutritionals[] = [];
-        data.forEach((element) => {
-          const transformedObject = [
-            {
-              name: "Calories",
-              quantity: element.calories,
-              unit: "kcal",
-            },
-            {
-              name: "Protéines",
-              quantity: element.protein,
-              unit: "g",
-            },
-            {
-              name: "Glucides",
-              quantity: element.carbohydrates,
-              unit: "g",
-            },
-            {
-              name: "Lipides",
-              quantity: element.lipid,
-              unit: "g",
-            },
-          ];
-          newData = transformedObject;
-        });
-        return newData;
-      } catch (error) {
-        console.error("Erreur lors de l'ajout du contrat");
-      }
-    },
+    
+    // A VOIR
+    // async getOneFoodsNutritionalsByFoodBinds({ commit }, idMeal: any) {
+    //   try {
+    //     const data: IFoodsNutritionals[] =
+    //       await getOneFoodsNutritionalsByFoodBinds(idMeal);
+    //     let newData: IFoodsNutritionals[] = [];
+    //     data.forEach((element) => {
+    //       const transformedObject = [
+    //         {
+    //           name: "Calories",
+    //           quantity: element.calories,
+    //           unit: "kcal",
+    //         },
+    //         {
+    //           name: "Protéines",
+    //           quantity: element.protein,
+    //           unit: "g",
+    //         },
+    //         {
+    //           name: "Glucides",
+    //           quantity: element.carbohydrates,
+    //           unit: "g",
+    //         },
+    //         {
+    //           name: "Lipides",
+    //           quantity: element.lipid,
+    //           unit: "g",
+    //         },
+    //       ];
+    //       newData = transformedObject;
+    //     });
+    //     return newData;
+    //   } catch (error) {
+    //     console.error("Erreur lors de l'ajout du contrat");
+    //   }
+    // },
     async deleteOneFoodNutritional({ commit }, id) {
       try {
         await deleteOneFoodNutritional(id);
