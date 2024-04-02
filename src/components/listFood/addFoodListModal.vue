@@ -148,6 +148,7 @@ export default {
     closeListFoodModal() {
       this.managementListFoodModal(false);
       this.formData = {
+        _id: "",
         unitMeasurement: false,
         name: "",
         calories: 0,

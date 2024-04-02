@@ -73,8 +73,11 @@
 </template>
 
 <script lang="ts">
-import { ICategory } from "@/models/category.models";
 import MealDetailCard from "@/components/infoCard/MealDetailCard.vue";
+
+import { ICategory } from "@/models/category.models";
+import { IFoodsByMeal } from "@/models/foodsByMeal.models";
+
 import { mapActions, mapState } from "vuex";
 
 export default {
@@ -95,7 +98,7 @@ export default {
           price: 0,
         },
       },
-      foodByMeal: {},
+      foodByMeal: [] as IFoodsByMeal[],
     };
   },
   created() {
@@ -108,7 +111,7 @@ export default {
   },
   props: {
     meal: {
-      type: Array as () => ICategory[],
+      type: Object as () => ICategory,
       required: true,
     },
   },

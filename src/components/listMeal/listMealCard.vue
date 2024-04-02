@@ -10,6 +10,8 @@
 
 <script lang="ts">
 import MealCard from "@/components/listMeal/MealCard.vue";
+import { ICategory } from "@/models/category.models";
+import { IMeals } from "@/models/meals.models";
 
 export default {
   name: "listMealCard",
@@ -18,11 +20,11 @@ export default {
   },
   props: {
     getListAllCategory: {
-      type: Array,
+      type: Array as () => ICategory[],
       required: true,
     },
     getListAllMeals: {
-      type: Array,
+      type: Array as () => IMeals[],
       required: true,
     },
     isEditing: {
@@ -36,9 +38,9 @@ export default {
   },
   methods: {
     openMealModal(params: object) {
-      this.$emit("openMealModal", params)
-    }
-  }
+      this.$emit("openMealModal", params);
+    },
+  },
 };
 </script>
 
