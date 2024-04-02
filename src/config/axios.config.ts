@@ -9,7 +9,7 @@ axios.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET, POST, PUT,
 axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Content-Type';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:3001/', // L'URL API
+  baseURL: 'https://eat-machine-back-prod-b5194754aa44.herokuapp.com/', // L'URL API
 });
 
 export default axiosInstance;
