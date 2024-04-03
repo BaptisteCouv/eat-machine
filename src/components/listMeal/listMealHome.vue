@@ -114,10 +114,12 @@ export default {
     ]),
 
     async getCategory() {
+      console.log('Passe');
+      
       await this.getAllCategory().then(() => {
         this.trierLesHeures(this.getListAllCategory);
       });
-      this.getAllMeals();
+      await this.getAllMeals();
     },
     openModalWithParam(isOpen: boolean) {
       this.managementListMealModal(isOpen);

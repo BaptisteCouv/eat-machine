@@ -209,17 +209,13 @@ export default {
       return this.getListAllCategory.map((item: any) => item.name);
     },
     valid() {
-      if (this.formData && this.formData.idCategory) {
-        this.formData.idCategory = [];
-        this.tempCategorySelected.forEach((element: any) => {
-          let temp = this.getListAllCategory.find(
-            (e: any) => e.name === element
-          );
-          if (temp) {
-            this.formData.idCategory.push(temp._id);
-          }
-        });
-      }
+      this.formData.idCategory = [];
+      this.tempCategorySelected.forEach((element: any) => {
+        let temp = this.getListAllCategory.find((e: any) => e.name === element);
+        if (temp) {
+          this.formData.idCategory.push(temp._id);
+        }
+      });
     },
     changeMeal() {
       this.valid();

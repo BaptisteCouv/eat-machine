@@ -145,10 +145,10 @@ export default {
       if (this.isEditing) {
         if (isCategory) {
           this.managementCategoryModal(true);
-          this.listEditCurrentCategory(params);
+          await this.listEditCurrentCategory(params);
         } else {
           this.$emit("openMealModal", params);
-          this.managementListMealModal(true);
+          await this.managementListMealModal(true);
         }
       } else if (this.isDeleting) {
         if (isCategory) {
@@ -166,9 +166,9 @@ export default {
             await this.changeOneMeal(element);
           });
 
-          this.deleteOneCategory(params._id);
+          await this.deleteOneCategory(params._id);
         } else {
-          this.deleteOneMeal(params._id);
+          await this.deleteOneMeal(params._id);
         }
         const param = {
           refresh: true,

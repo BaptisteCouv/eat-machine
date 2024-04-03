@@ -103,24 +103,26 @@ export default {
   methods: {
     ...mapActions([
       "managementCategoryModal",
+      "listEditCurrentCategory",
       "addNewOneCategory",
       "modifyCategory",
     ]),
-    closeCategoryModal() {
-      this.managementCategoryModal(false);
+    async closeCategoryModal() {
       this.formData = {
         name: "",
         mealTime: 12,
       };
+      await this.listEditCurrentCategory({});
+      this.managementCategoryModal(false);
     },
-    addCategoryToList() {
-      this.addNewOneCategory(this.formData);
+    async addCategoryToList() {
+      await this.addNewOneCategory(this.formData);
       this.closeCategoryModal();
       this.$emit("some-event");
     },
-    changeCategoryData() {
-      this.modifyCategory(this.formData);
-      this.closeCategoryModal();
+    async changeCategoryData() {
+      await this.modifyCategory(this.formData);
+      await this.closeCategoryModal();
       this.$emit("some-event");
     },
     formatTime(value: number) {

@@ -10,7 +10,6 @@ import {
 import {
   getAllListFoodsNutritionals,
   addOneFoodNutritional,
-  getOneFoodsNutritionalsByFoodBinds,
   deleteOneFoodNutritional,
 } from "@/services/foodsNutritionals.services";
 import {
@@ -116,7 +115,7 @@ export default createStore({
     },
 
     async modifyFoodsByMeals(
-      { commit },
+      _,
       { idFoodMeal, quantity }: { idFoodMeal: string; quantity: number }
     ) {
       try {
@@ -126,7 +125,7 @@ export default createStore({
       }
     },
 
-    async deleteOneFoodByMeal({ commit }, idFoodBind: string) {
+    async deleteOneFoodByMeal(_, idFoodBind: string) {
       try {
         await deleteOneFoodByMeal(idFoodBind);
       } catch (error) {
@@ -145,7 +144,7 @@ export default createStore({
       }
     },
 
-    async addNewOneCategory({ commit }, category) {
+    async addNewOneCategory(_, category) {
       try {
         await addOneCategory(category);
       } catch (error) {
@@ -153,7 +152,7 @@ export default createStore({
       }
     },
 
-    async modifyCategory({ commit }, category) {
+    async modifyCategory(_, category) {
       try {
         await modifyCategory(category);
       } catch (error) {
@@ -161,7 +160,7 @@ export default createStore({
       }
     },
 
-    async deleteOneCategory({ commit }, categoryId: string) {
+    async deleteOneCategory(_, categoryId: string) {
       try {
         await deleteOneCategory(categoryId);
       } catch (error) {
@@ -180,7 +179,7 @@ export default createStore({
       }
     },
 
-    async addNewOneMeal({ commit }, meal) {
+    async addNewOneMeal(_, meal) {
       try {
         await addOneMeal(meal);
       } catch (error) {
@@ -188,7 +187,7 @@ export default createStore({
       }
     },
 
-    async getMealName({ commit }, idMeal: string) {
+    async getMealName(_, idMeal: string) {
       try {
         return await getMealName(idMeal);
       } catch (error) {
@@ -196,7 +195,7 @@ export default createStore({
       }
     },
 
-    async changeOneMeal({ commit }, mealBody: any) {
+    async changeOneMeal(_, mealBody: any) {
       try {
         await changeOneMeal(mealBody);
       } catch (error) {
@@ -204,7 +203,7 @@ export default createStore({
       }
     },
 
-    async deleteOneMeal({ commit }, mealId: string) {
+    async deleteOneMeal(_, mealId: string) {
       try {
         await deleteOneMeal(mealId);
       } catch (error) {
@@ -223,7 +222,7 @@ export default createStore({
       }
     },
 
-    async addNewOneFoodNutritional({ commit }, food) {
+    async addNewOneFoodNutritional(_, food) {
       try {
         await addOneFoodNutritional(food);
       } catch (error) {
@@ -267,7 +266,7 @@ export default createStore({
     //     console.error("Erreur lors de l'ajout du contrat");
     //   }
     // },
-    async deleteOneFoodNutritional({ commit }, id) {
+    async deleteOneFoodNutritional(_, id) {
       try {
         await deleteOneFoodNutritional(id);
       } catch (error) {
