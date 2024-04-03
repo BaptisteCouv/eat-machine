@@ -184,7 +184,6 @@ export default {
     },
     addMealToList() {
       this.valid();
-      console.log(this.formData);
       
       this.addNewOneMeal(this.formData);
       this.closeListMealModal();
@@ -204,8 +203,6 @@ export default {
     },
     saveDate() {
       if (!this.formData.dateSelect) return "";
-      console.log(this.formData.dateSelect);
-
       this.textFieldDate = this.convertDate(this.formData.dateSelect);
       this.dialogVisible = false;
     },

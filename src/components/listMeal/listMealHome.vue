@@ -114,8 +114,6 @@ export default {
     ]),
 
     async getCategory() {
-      console.log('Passe');
-      
       await this.getAllCategory().then(() => {
         this.trierLesHeures(this.getListAllCategory);
       });
