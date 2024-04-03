@@ -184,7 +184,8 @@ export default {
     },
     addMealToList() {
       this.valid();
-      
+      console.log(this.formData);
+
       this.addNewOneMeal(this.formData);
       this.closeListMealModal();
       this.$emit("some-event");
