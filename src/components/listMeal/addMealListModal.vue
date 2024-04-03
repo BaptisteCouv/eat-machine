@@ -184,10 +184,20 @@ export default {
     },
     addMealToList() {
       this.valid();
-      console.log(this.formData);
-      this.formData.dateSelect = new Date(
-        this.formData.dateSelect
-      ).toISOString();
+
+      // *************************************************
+      // Partie a revoir ! Problème de décalage horaire
+      // ajout d'un jour en decalage horaire
+      var year = this.formData.dateSelect.getUTCFullYear();
+      var month = this.formData.dateSelect.getUTCMonth() + 1; 
+      var day = this.formData.dateSelect.getUTCDate() + 1;
+
+      var dateUTC = new Date(Date.UTC(year, month - 1, day));
+
+      var dateISO = dateUTC.toISOString();
+      this.formData.dateSelect = dateISO;
+
+      // *************************************************
 
       this.addNewOneMeal(this.formData);
       this.closeListMealModal();
