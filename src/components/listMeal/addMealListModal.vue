@@ -185,6 +185,9 @@ export default {
     addMealToList() {
       this.valid();
       console.log(this.formData);
+      this.formData.dateSelect = new Date(
+        this.formData.dateSelect
+      ).toISOString();
 
       this.addNewOneMeal(this.formData);
       this.closeListMealModal();
