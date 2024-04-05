@@ -11,16 +11,38 @@
     <v-img aspect-ratio="4/3" src="../../assets/Vector-1.svg"></v-img>
   </div>
   <div class="button-app">
-    <v-btn class="btn-start" rounded="xl" size="x-large" block append-icon="mdi-arrow-right-thick">Commencer</v-btn>
-    <v-btn class="btn-login mt-4" variant="text" rounded="xl" size="large" block
-      >Connexion</v-btn
+    <v-btn
+      class="btn-start"
+      rounded="xl"
+      size="x-large"
+      block
+      append-icon="mdi-arrow-right-thick"
+      @click="temp()"
     >
+      Commencer
+    </v-btn>
+    <v-btn
+      class="btn-login mt-2"
+      variant="text"
+      rounded="xl"
+      size="large"
+      block
+    >
+      Connexion
+    </v-btn>
   </div>
 </template>
 
 <script lang="ts">
+import router from "@/router";
+
 export default {
   name: "FirstPageConnection",
+  methods: {
+    temp() {
+      router.push({ path: "/" });
+    },
+  },
 };
 </script>
 <style lang="scss">
@@ -98,10 +120,10 @@ export default {
     letter-spacing: 0.5px;
   }
   .btn-login {
-    color: $secondary-color;
-    text-transform: lowercase;
+    color: white;
+    text-transform: none;
     font-size: 18px;
-    font-weight: 500;
+    font-weight: 300;
   }
 }
 </style>
