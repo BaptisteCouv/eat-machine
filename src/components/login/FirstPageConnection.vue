@@ -11,7 +11,7 @@
     <v-img aspect-ratio="4/3" src="../../assets/Vector-1.svg"></v-img>
   </div>
   <div class="button-app">
-    <v-btn class="btn-start" rounded="xl" size="x-large" block>Commencer</v-btn>
+    <v-btn class="btn-start" rounded="xl" size="x-large" block append-icon="mdi-arrow-right-thick">Commencer</v-btn>
     <v-btn class="btn-login mt-4" variant="text" rounded="xl" size="large" block
       >Connexion</v-btn
     >
@@ -98,7 +98,7 @@ export default {
     letter-spacing: 0.5px;
   }
   .btn-login {
-    color: $thirdary-color;
+    color: $secondary-color;
     text-transform: lowercase;
     font-size: 18px;
     font-weight: 500;
