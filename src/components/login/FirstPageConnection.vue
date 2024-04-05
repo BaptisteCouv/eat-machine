@@ -1,8 +1,9 @@
 <template>
-  <div class="picture-home d-flex">
-    <v-img aspect-ratio="4/3" src="../../assets/Humaaans - Space.png"></v-img>
+  <!-- <v-img class="test" aspect-ratio="4/3" src="../../assets/Humaaans - Space.png"></v-img> -->
+  <div class="picture-home pt-4">
+    <img class="picture" src="../../assets/Humaaans - Space.png" />
   </div>
-  <div class="title-app mt-10">
+  <div class="title-app mt-5">
     <div class="title">Eat machine</div>
     <div class="desc">manger mieux c'est mieux</div>
   </div>
@@ -39,6 +40,13 @@ export default {
     color: $secondary-color;
     font-size: 17px;
     font-weight: 200;
+  }
+}
+
+.picture-home {
+  text-align: center;
+  .picture {
+    width: calc(100% - 114px);
   }
 }
 
