@@ -31,6 +31,9 @@
 </script>
 
 <style lang="scss">
+.test {
+  overflow: hidden;
+}
 .curve-bottom {
   position: absolute;
   bottom: 0;
