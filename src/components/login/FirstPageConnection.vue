@@ -40,7 +40,7 @@ export default {
   name: "FirstPageConnection",
   methods: {
     temp() {
-      router.push({ path: "/" });
+      router.push({ path: "auth/login" });
     },
   },
 };
