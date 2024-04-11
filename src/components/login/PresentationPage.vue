@@ -3,7 +3,7 @@
     <svg
       class="curve-top"
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 1340 320"
+      viewBox="0 0 1540 320"
     >
       <path
         fill="#71B86F"
@@ -15,7 +15,7 @@
     <svg
       class="curve-bottom"
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 1440 320"
+      viewBox="0 0 1500 320"
     >
       <path
         fill="#71B86F"
