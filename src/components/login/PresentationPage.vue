@@ -10,7 +10,11 @@
       d="M0,32L24,26.7C48,21,96,11,144,32C192,53,240,107,288,117.3C336,128,384,96,432,101.3C480,107,528,149,576,181.3C624,213,672,235,720,224C768,213,816,171,864,176C912,181,960,235,1008,240C1056,245,1104,203,1152,154.7C1200,107,1248,53,1296,58.7C1344,64,1392,128,1416,160L1440,192L1440,0L1416,0C1392,0,1344,0,1296,0C1248,0,1200,0,1152,0C1104,0,1056,0,1008,0C960,0,912,0,864,0C816,0,768,0,720,0C672,0,624,0,576,0C528,0,480,0,432,0C384,0,336,0,288,0C240,0,192,0,144,0C96,0,48,0,24,0L0,0Z"
     ></path>
   </svg>
-  <router-view />
+  <router-view v-slot="{ Component }">
+    <transition name="page">
+      <component :is="Component" />
+    </transition>
+  </router-view>
   <svg
     class="curve-bottom"
     xmlns="http://www.w3.org/2000/svg"
@@ -39,5 +43,39 @@
   position: absolute;
   top: 0;
   z-index: -1;
+}
+
+// .nested-leave-active {
+//   transition: all 1.5s ease-in-out;
+// }
+// .nested-leave-to {
+//   transform: translateX(-300px);
+//   opacity: 0;
+// }
+
+// .nested-enter-active,
+// .nested-enter-from {
+//   transform: translateX(300px);
+//   opacity: 0;
+// }
+// .nested-enter-active {
+//   transition-delay: 0.55s;
+// }
+
+.page-leave-active,
+.page-enter-active {
+  transition: transform 0.5s ease;
+}
+
+.page-leave-active {
+  transform: translateX(-100%);
+}
+
+.page-enter {
+  transform: translateX(100%);
+}
+
+.page-enter-active {
+  transform: translateX(0);
 }
 </style>

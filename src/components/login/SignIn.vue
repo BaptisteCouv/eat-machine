@@ -5,10 +5,26 @@
         <div class="title">Bienvenue</div>
       </v-col>
       <v-col cols="12">
-        <div class="desc">Connectez-vous pour accéder à votre compte</div>
+        <div class="desc">Démarrez votre parcours : Inscrivez-vous ici !</div>
       </v-col>
       <v-col cols="12">
-        <v-text-field :rules="[rules.required]" label="E-mail" variant="outlined"></v-text-field>
+        <v-text-field
+          :rules="[rules.required]"
+          label="Nom"
+          variant="outlined"
+        ></v-text-field>
+        <v-text-field
+          :rules="[rules.required]"
+          class="mt-3"
+          label="Prénom"
+          variant="outlined"
+        ></v-text-field>
+        <v-text-field
+          :rules="[rules.required]"
+          class="mt-3"
+          label="E-mail"
+          variant="outlined"
+        ></v-text-field>
         <v-text-field
           v-model="password"
           :append-inner-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -29,9 +45,9 @@
           rounded="xl"
           block
           append-icon="mdi-arrow-right-thick"
-          @click="goToConnect()"
+          @click="goToSignIn()"
         >
-          Connexion
+          inscription
         </v-btn>
         <div class="desc-btn">Vous n'avez pas encore de compte ?</div>
         <v-btn
@@ -39,9 +55,9 @@
           variant="text"
           rounded="xl"
           block
-          @click="goToSignIn()"
+          @click="goToConnect()"
         >
-          inscription
+          Connexion
         </v-btn>
       </v-col>
     </v-row>
@@ -52,7 +68,8 @@
 import router from "@/router";
 
 export default {
-  name: "Login",
+  name: "SignIn",
+
   data() {
     return {
       show1: false,
@@ -71,7 +88,7 @@ export default {
       router.push({ path: "signin" });
     },
     goToConnect() {
-      router.push({ path: "/" });
+      router.push({ path: "login" });
     },
   },
 };

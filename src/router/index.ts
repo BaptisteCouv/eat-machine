@@ -9,11 +9,7 @@ const routes = [
       {
         path: "/",
         name: "Home",
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () =>
-          import(/* webpackChunkName: "home" */ "@/views/Home.vue"),
+        component: () => import("@/views/Home.vue"),
       },
       {
         path: "/listFood",
@@ -34,29 +30,40 @@ const routes = [
       {
         path: "",
         name: "Presentation",
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () =>
-          import(/* webpackChunkName: "home" */ "@/components/login/FirstPageConnection.vue"),
+        component: () => import("@/components/login/FirstPageConnection.vue"),
       },
       {
         path: "login",
         name: "Login",
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () =>
-          import(/* webpackChunkName: "home" */ "@/components/login/Login.vue"),
+        component: () => import("@/components/login/Login.vue"),
       },
       {
-        path: "/signin",
+        path: "signin",
         name: "Signin",
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
+        component: () => import("@/components/login/SignIn.vue"),
+      },
+      {
+        path: "presentation",
+        name: "Presentation",
+        component: () => import("@/components/login/SignInPresentation.vue"),
+      },
+      {
+        path: "anthropometric",
+        name: "Anthropometric",
         component: () =>
-          import(/* webpackChunkName: "home" */ "@/views/Home.vue"),
+          import(
+            "@/components/login/SignInPageAnthropometricClassification.vue"
+          ),
+      },
+      {
+        path: "eatingGoal",
+        name: "EatingGoal",
+        component: () => import("@/components/login/SignInEatingGoal.vue"),
+      },
+      {
+        path: "physicalGoal",
+        name: "PhysicalGoal",
+        component: () => import("@/components/login/SignInPhysicalGoal.vue"),
       },
     ],
   },

@@ -3,3 +3,39 @@ $secondary-color: #2f3061;
 $thirdary-color: #f0e2a5;
 $fourthary-color: #e2ca67;
 $fifthary-color: #1d7b65;
+
+// Mixin pour générer les styles des boutons
+@mixin button-styles($color) {
+  color: $color !important;
+  background-color: white !important;
+
+  &.reverse {
+    color: white !important;
+    background-color: $color !important;
+  }
+}
+
+// Bouton primaire
+.btn-primary {
+  @include button-styles($primary-color);
+}
+
+// Bouton secondaire
+.btn-secondary {
+  @include button-styles($secondary-color);
+}
+
+// Bouton tertiaire
+.btn-tertiary {
+  @include button-styles($thirdary-color);
+}
+
+// Bouton quaternaire
+.btn-quaternary {
+  @include button-styles($fourthary-color);
+}
+
+// Bouton quinaire
+.btn-quinary {
+  @include button-styles($fifthary-color);
+}

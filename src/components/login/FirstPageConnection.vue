@@ -7,26 +7,27 @@
     <div class="title">Eat machine</div>
     <div class="desc">manger mieux c'est mieux</div>
   </div>
-  <div class="svg-picture">
+  <!-- <div class="svg-picture">
     <v-img aspect-ratio="4/3" src="../../assets/Vector-1.svg"></v-img>
-  </div>
+  </div> -->
   <div class="button-app">
     <v-btn
-      class="btn-start"
+      class="btn-secondary mb-6"
       rounded="xl"
       size="x-large"
       block
       append-icon="mdi-arrow-right-thick"
-      @click="temp()"
     >
       Commencer
     </v-btn>
+    <div class="desc-btn">Vous avez déjà un compte ?</div>
     <v-btn
-      class="btn-login mt-2"
+      class="btn-secondary mt-1"
       variant="text"
       rounded="xl"
-      size="large"
+      size="small"
       block
+      @click="temp()"
     >
       Connexion
     </v-btn>
@@ -40,7 +41,7 @@ export default {
   name: "FirstPageConnection",
   methods: {
     temp() {
-      router.push({ path: "auth/login" });
+      router.push({ path: "login" });
     },
   },
 };
@@ -78,35 +79,6 @@ export default {
   bottom: 0;
 }
 
-.tache {
-  width: 100px;
-  height: 100px;
-  background-color: red;
-  position: relative;
-
-  &::before,
-  &::after {
-    content: "";
-    position: absolute;
-    width: 50%;
-    height: 50%;
-    background-color: red;
-    border-radius: 50%;
-  }
-
-  &::before {
-    top: 0;
-    left: 25%;
-    transform: rotate(45deg);
-  }
-
-  &::after {
-    bottom: 0;
-    right: 25%;
-    transform: rotate(-45deg);
-  }
-}
-
 .button-app {
   position: absolute;
   bottom: 0;
@@ -119,11 +91,11 @@ export default {
     font-weight: 900;
     letter-spacing: 0.5px;
   }
-  .btn-login {
-    color: white;
-    text-transform: none;
-    font-size: 18px;
-    font-weight: 300;
-  }
+}
+
+.desc-btn {
+  color: $secondary-color;
+  font-size: 12px;
+  text-align: center;
 }
 </style>
