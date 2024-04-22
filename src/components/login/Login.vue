@@ -29,6 +29,7 @@
           @click:append-inner="show1 = !show1"
           @blur="rulesRespected"
         ></v-text-field>
+        <div class="message-event">{{ messageEvent }}</div>
       </v-col>
       <v-col cols="12" class="px-16">
         <v-btn
@@ -69,6 +70,7 @@ export default {
       password: "",
       email: "",
       isActive: true,
+      messageEvent: "",
       rules: {
         required: (value: any) => !!value || "Champ obligatoire.",
         min: (v: any) => v.length >= 4 || "Minimum 4 characters",
@@ -82,12 +84,13 @@ export default {
     goToSignUp() {
       router.push({ path: "signup" });
     },
-    goToConnect() {
-      router.push({ path: "/" });
-    },
     async connexion() {
-      await this.loginConnexion({ email: this.email, password: this.password });
-      this.goToConnect();
+      await this.loginConnexion({
+        email: this.email,
+        password: this.password,
+      }).then((res) => {
+        this.messageEvent = res;
+      });
     },
     rulesRespected() {
       this.rules.min(this.email);
@@ -141,6 +144,10 @@ export default {
 .desc-btn {
   color: $secondary-color;
   font-size: 12px;
+  text-align: center;
+}
+.message-event {
+  color: red;
   text-align: center;
 }
 </style>

@@ -41,6 +41,7 @@
           counter
           @click:append-inner="show1 = !show1"
         ></v-text-field>
+        <div class="message-event">{{ messageEvent }}</div>
       </v-col>
       <v-col cols="12" class="px-16">
         <v-btn
@@ -58,7 +59,7 @@
           variant="text"
           rounded="xl"
           block
-          @click="goToConnect()"
+          @click="goToConnection()"
         >
           Connexion
         </v-btn>
@@ -83,6 +84,7 @@ export default {
       lastName: "",
       firstName: "",
       email: "",
+      messageEvent: "",
       rules: {
         required: (value: any) => !!value || "Required.",
         min: (v: any) => v.length >= 8 || "Min 8 characters",
@@ -100,18 +102,16 @@ export default {
     goToConnection() {
       router.push({ path: "login" });
     },
-    goToConnect() {
-      router.push({ path: "/" });
-    },
     async signUp() {
       await this.signUpConnexion({
         password: this.password,
         email: this.email,
         lastName: this.lastName,
         firstName: this.firstName,
+      }).then((res) => {
+        this.messageEvent = res;
       });
       await this.loginConnexion({ email: this.email, password: this.password });
-      this.goToConnect();
     },
   },
 };
@@ -154,6 +154,10 @@ export default {
 .desc-btn {
   color: $secondary-color;
   font-size: 12px;
+  text-align: center;
+}
+.message-event {
+  color: red;
   text-align: center;
 }
 </style>

@@ -30,6 +30,7 @@ import { IMeals } from "@/models/meals.models";
 import { IFoodsNutritionals } from "@/models/foodsNutritionals.models";
 import { ICategory } from "@/models/category.models";
 import { IFoodsBinds } from "@/models/foodsBinds.models";
+import router from "@/router";
 
 export default createStore({
   state: {
@@ -117,18 +118,28 @@ export default createStore({
       commit("addIdCurrentMealOpenend", params);
     },
     async loginConnexion({ commit }, params) {
-      const token = await loginToken(params);
-      if (token) {
-        localStorage.setItem("token", token.token);
-        await commit("setToken", token.token);
-        await commit("setUserId", token.userId);
+      try {
+        const token = await loginToken(params);
+        if (token) {
+          localStorage.setItem("token", token.token);
+          await commit("setToken", token.token);
+          await commit("setUserId", token.userId);
+          router.push({ path: "/" });
+        }
+      } catch (error) {
+        return "Paire login/mot de passe incorrecte";
       }
     },
     async signUpConnexion({ commit }, params) {
       try {
-        await signUp(params);
+        const e = await signUp(params);
+        if (e) {
+          router.push({ path: "/" });
+        } else {
+          return "E-mail déjà utilisé";
+        }
       } catch (error) {
-        console.error("Erreur lors de l'ajout du contrat");
+        return "E-mail déjà utilisé";
       }
     },
     // FOOD BIND --------------------------------------------------
