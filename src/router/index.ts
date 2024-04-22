@@ -47,24 +47,24 @@ const routes = [
         name: "Presentation",
         component: () => import("@/components/login/SignUpPresentation.vue"),
       },
-      {
-        path: "anthropometric",
-        name: "Anthropometric",
-        component: () =>
-          import(
-            "@/components/login/SignUpPageAnthropometricClassification.vue"
-          ),
-      },
-      {
-        path: "eatingGoal",
-        name: "EatingGoal",
-        component: () => import("@/components/login/SignUpEatingGoal.vue"),
-      },
-      {
-        path: "physicalGoal",
-        name: "PhysicalGoal",
-        component: () => import("@/components/login/SignUpPhysicalGoal.vue"),
-      },
+      // {
+      //   path: "anthropometric",
+      //   name: "Anthropometric",
+      //   component: () =>
+      //     import(
+      //       "@/components/login/SignUpPageAnthropometricClassification.vue"
+      //     ),
+      // },
+      // {
+      //   path: "eatingGoal",
+      //   name: "EatingGoal",
+      //   component: () => import("@/components/login/SignUpEatingGoal.vue"),
+      // },
+      // {
+      //   path: "physicalGoal",
+      //   name: "PhysicalGoal",
+      //   component: () => import("@/components/login/SignUpPhysicalGoal.vue"),
+      // },
     ],
   },
 ];
