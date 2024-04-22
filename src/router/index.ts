@@ -1,10 +1,10 @@
 // Composables
 import { createRouter, createWebHistory } from "vue-router";
-
 const routes = [
   {
     path: "/",
     component: () => import("@/layouts/default/Default.vue"),
+    meta: { requiresAuth: true },
     children: [
       {
         path: "/",
@@ -29,7 +29,7 @@ const routes = [
     children: [
       {
         path: "",
-        name: "Presentation",
+        name: "Presentations",
         component: () => import("@/components/login/FirstPageConnection.vue"),
       },
       {
@@ -38,32 +38,32 @@ const routes = [
         component: () => import("@/components/login/Login.vue"),
       },
       {
-        path: "signin",
-        name: "Signin",
-        component: () => import("@/components/login/SignIn.vue"),
+        path: "signup",
+        name: "SignUp",
+        component: () => import("@/components/login/SignUp.vue"),
       },
       {
         path: "presentation",
         name: "Presentation",
-        component: () => import("@/components/login/SignInPresentation.vue"),
+        component: () => import("@/components/login/SignUpPresentation.vue"),
       },
       {
         path: "anthropometric",
         name: "Anthropometric",
         component: () =>
           import(
-            "@/components/login/SignInPageAnthropometricClassification.vue"
+            "@/components/login/SignUpPageAnthropometricClassification.vue"
           ),
       },
       {
         path: "eatingGoal",
         name: "EatingGoal",
-        component: () => import("@/components/login/SignInEatingGoal.vue"),
+        component: () => import("@/components/login/SignUpEatingGoal.vue"),
       },
       {
         path: "physicalGoal",
         name: "PhysicalGoal",
-        component: () => import("@/components/login/SignInPhysicalGoal.vue"),
+        component: () => import("@/components/login/SignUpPhysicalGoal.vue"),
       },
     ],
   },
@@ -72,6 +72,16 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem('token');
+
+  if (to.meta.requiresAuth && !token ) {
+    next("/auth/login");
+  } else {
+    next();
+  }
 });
 
 export default router;

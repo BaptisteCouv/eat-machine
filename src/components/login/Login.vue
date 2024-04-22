@@ -8,7 +8,13 @@
         <div class="desc">Connectez-vous pour accéder à votre compte</div>
       </v-col>
       <v-col cols="12">
-        <v-text-field :rules="[rules.required]" label="E-mail" variant="outlined"></v-text-field>
+        <v-text-field
+          v-model="email"
+          :rules="[rules.required]"
+          label="E-mail"
+          variant="outlined"
+          @blur="rulesRespected"
+        ></v-text-field>
         <v-text-field
           v-model="password"
           :append-inner-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -21,25 +27,27 @@
           name="input-10-1"
           counter
           @click:append-inner="show1 = !show1"
+          @blur="rulesRespected"
         ></v-text-field>
       </v-col>
       <v-col cols="12" class="px-16">
         <v-btn
+          :disabled="isActive"
           class="btn-secondary reverse mb-6"
           rounded="xl"
           block
           append-icon="mdi-arrow-right-thick"
-          @click="goToConnect()"
+          @click="connexion()"
         >
           Connexion
         </v-btn>
         <div class="desc-btn">Vous n'avez pas encore de compte ?</div>
         <v-btn
-          class="btn-signin mt-1"
+          class="btn-signup mt-1"
           variant="text"
           rounded="xl"
           block
-          @click="goToSignIn()"
+          @click="goToSignUp()"
         >
           inscription
         </v-btn>
@@ -50,6 +58,7 @@
 
 <script lang="ts">
 import router from "@/router";
+import { mapActions } from "vuex";
 
 export default {
   name: "Login",
@@ -58,20 +67,38 @@ export default {
       show1: false,
       show2: true,
       password: "",
+      email: "",
+      isActive: true,
       rules: {
-        required: (value: any) => !!value || "Required.",
-        min: (v: any) => v.length >= 8 || "Min 8 characters",
+        required: (value: any) => !!value || "Champ obligatoire.",
+        min: (v: any) => v.length >= 4 || "Minimum 4 characters",
         emailMatch: () => `The email and password you entered don't match`,
       },
     };
   },
-
   methods: {
-    goToSignIn() {
-      router.push({ path: "signin" });
+    ...mapActions(["loginConnexion"]),
+
+    goToSignUp() {
+      router.push({ path: "signup" });
     },
     goToConnect() {
       router.push({ path: "/" });
+    },
+    async connexion() {
+      await this.loginConnexion({ email: this.email, password: this.password });
+      this.goToConnect();
+    },
+    rulesRespected() {
+      this.rules.min(this.email);
+      if (
+        this.rules.required(this.password) === true &&
+        this.rules.required(this.email) === true
+      ) {
+        this.isActive = false;
+      } else {
+        this.isActive = true;
+      }
     },
   },
 };
@@ -105,7 +132,7 @@ export default {
   font-weight: 900;
   letter-spacing: 0.5px;
 }
-.btn-signin {
+.btn-signup {
   color: $secondary-color;
   text-transform: none;
   font-size: 18px;

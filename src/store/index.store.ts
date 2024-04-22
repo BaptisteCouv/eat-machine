@@ -23,6 +23,8 @@ import {
   modifyFoodsByMeals,
   deleteOneFoodByMeal,
 } from "@/services/foodsBinds.services";
+import { loginToken, signUp } from "@/services/login.services";
+import { getUserIdFromToken } from "@/auth/authUtils";
 
 import { IMeals } from "@/models/meals.models";
 import { IFoodsNutritionals } from "@/models/foodsNutritionals.models";
@@ -42,6 +44,9 @@ export default createStore({
     listAllFoods: {},
     listAllCategory: {},
     listFoodsByMeals: {},
+
+    token: null as string | null,
+    userId: null as string | null,
   },
   mutations: {
     managementListMealModal(state, isOpen) {
@@ -77,6 +82,17 @@ export default createStore({
     listFoodsByMeals(state, listFoodsByMeals) {
       state.listFoodsByMeals = listFoodsByMeals;
     },
+    setToken(state, token: string) {
+      state.token = token;
+    },
+    setUserId(state, userId: string) {
+      state.userId = userId;
+    },
+    logout(state) {
+      state.token = null;
+      state.userId = null;
+      localStorage.removeItem("token");
+    },
   },
   actions: {
     managementListMealModal({ commit }, params) {
@@ -100,7 +116,21 @@ export default createStore({
     addIdCurrentMealOpenend({ commit }, params) {
       commit("addIdCurrentMealOpenend", params);
     },
-
+    async loginConnexion({ commit }, params) {
+      const token = await loginToken(params);
+      if (token) {
+        localStorage.setItem("token", token.token);
+        await commit("setToken", token.token);
+        await commit("setUserId", token.userId);
+      }
+    },
+    async signUpConnexion({ commit }, params) {
+      try {
+        await signUp(params);
+      } catch (error) {
+        console.error("Erreur lors de l'ajout du contrat");
+      }
+    },
     // FOOD BIND --------------------------------------------------
 
     async getAllFoodsByMeals({ commit }, idMeal: string) {
@@ -229,7 +259,7 @@ export default createStore({
         console.error("Erreur lors de l'ajout du aliment");
       }
     },
-    
+
     // A VOIR
     // async getOneFoodsNutritionalsByFoodBinds({ commit }, idMeal: any) {
     //   try {

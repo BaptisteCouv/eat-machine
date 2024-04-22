@@ -1,5 +1,4 @@
 <template>
-  <!-- <v-img class="test" aspect-ratio="4/3" src="../../assets/Humaaans - Space.png"></v-img> -->
   <div class="picture-home pt-4">
     <img class="picture" src="../../assets/Humaaans - Space.png" />
   </div>
@@ -7,9 +6,6 @@
     <div class="title">Eat machine</div>
     <div class="desc">manger mieux c'est mieux</div>
   </div>
-  <!-- <div class="svg-picture">
-    <v-img aspect-ratio="4/3" src="../../assets/Vector-1.svg"></v-img>
-  </div> -->
   <div class="button-app">
     <v-btn
       class="btn-secondary mb-6"

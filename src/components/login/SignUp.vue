@@ -9,17 +9,20 @@
       </v-col>
       <v-col cols="12">
         <v-text-field
+          v-model="firstName"
           :rules="[rules.required]"
           label="Nom"
           variant="outlined"
         ></v-text-field>
         <v-text-field
+          v-model="lastName"
           :rules="[rules.required]"
           class="mt-3"
           label="Prénom"
           variant="outlined"
         ></v-text-field>
         <v-text-field
+          v-model="email"
           :rules="[rules.required]"
           class="mt-3"
           label="E-mail"
@@ -45,13 +48,13 @@
           rounded="xl"
           block
           append-icon="mdi-arrow-right-thick"
-          @click="goToSignIn()"
+          @click="signUp()"
         >
           inscription
         </v-btn>
         <div class="desc-btn">Vous n'avez pas encore de compte ?</div>
         <v-btn
-          class="btn-signin mt-1"
+          class="btn-signup mt-1"
           variant="text"
           rounded="xl"
           block
@@ -67,14 +70,19 @@
 <script lang="ts">
 import router from "@/router";
 
+import { mapActions } from "vuex";
+
 export default {
-  name: "SignIn",
+  name: "SignUp",
 
   data() {
     return {
       show1: false,
       show2: true,
       password: "",
+      lastName: "",
+      firstName: "",
+      email: "",
       rules: {
         required: (value: any) => !!value || "Required.",
         min: (v: any) => v.length >= 8 || "Min 8 characters",
@@ -84,11 +92,26 @@ export default {
   },
 
   methods: {
-    goToSignIn() {
-      router.push({ path: "signin" });
+    ...mapActions(["signUpConnexion", "loginConnexion"]),
+
+    goToSignUp() {
+      router.push({ path: "signup" });
+    },
+    goToConnection() {
+      router.push({ path: "login" });
     },
     goToConnect() {
-      router.push({ path: "login" });
+      router.push({ path: "/" });
+    },
+    async signUp() {
+      await this.signUpConnexion({
+        password: this.password,
+        email: this.email,
+        lastName: this.lastName,
+        firstName: this.firstName,
+      });
+      await this.loginConnexion({ email: this.email, password: this.password });
+      this.goToConnect();
     },
   },
 };
@@ -122,7 +145,7 @@ export default {
   font-weight: 900;
   letter-spacing: 0.5px;
 }
-.btn-signin {
+.btn-signup {
   color: $secondary-color;
   text-transform: none;
   font-size: 18px;
