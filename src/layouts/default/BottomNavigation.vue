@@ -10,11 +10,17 @@
 
       <span>Deconnexion</span>
     </v-btn>
+    <v-btn value="favorites" @click="logout()">
+      <v-icon>mdi-account-outline</v-icon>
+
+      <!-- <span>{{ user }}</span> -->
+    </v-btn>
   </v-bottom-navigation>
 </template>
 
 <script lang="ts">
 import AuthService from "@/auth/authUtils";
+import { mapActions } from "vuex";
 
 export default {
   name: "BottomNavigation",
@@ -23,12 +29,17 @@ export default {
     return {};
   },
   methods: {
+    ...mapActions(["getUserName"]),
+    
     gotToHome() {
       this.$router.push("/");
     },
     logout() {
       AuthService.logout();
     },
+  },
+  created() {
+    this.getUserName();
   },
 };
 </script>

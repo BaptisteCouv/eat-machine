@@ -21,3 +21,8 @@ export async function deleteOneCategory(categoryId: string) {
   const response = await axios.delete("/api/categories/" + categoryId);
   return response.data;
 }
+
+export async function getUserName(idUser: string) {
+  const response = await axios.get("/api/user/" + idUser);
+  return response.data;
+}

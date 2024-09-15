@@ -53,7 +53,6 @@ export default {
     handleEventFromChild() {
       // tempo
     },
-
   },
 };
 </script>

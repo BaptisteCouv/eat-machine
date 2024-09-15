@@ -17,6 +17,7 @@ import {
   addOneCategory,
   modifyCategory,
   deleteOneCategory,
+  getUserName,
 } from "@/services/category.services";
 import {
   getAllFoodsByMeals,
@@ -24,7 +25,6 @@ import {
   deleteOneFoodByMeal,
 } from "@/services/foodsBinds.services";
 import { loginToken, signUp } from "@/services/login.services";
-import { getUserIdFromToken } from "@/auth/authUtils";
 
 import { IMeals } from "@/models/meals.models";
 import { IFoodsNutritionals } from "@/models/foodsNutritionals.models";
@@ -48,6 +48,8 @@ export default createStore({
 
     token: null as string | null,
     userId: null as string | null,
+    firstName: null as string | null,
+    lastName: null as string | null,
   },
   mutations: {
     managementListMealModal(state, isOpen) {
@@ -89,6 +91,12 @@ export default createStore({
     setUserId(state, userId: string) {
       state.userId = userId;
     },
+    setFirstName(state, firstName: string) {
+      state.firstName = firstName;
+    },
+    setLastName(state, lastName: string) {
+      state.lastName = lastName;
+    },
     logout(state) {
       state.token = null;
       state.userId = null;
@@ -124,6 +132,8 @@ export default createStore({
           localStorage.setItem("token", token.token);
           await commit("setToken", token.token);
           await commit("setUserId", token.userId);
+          await commit("firstName", token.firstName);
+          await commit("setLastName", token.lastName);
           router.push({ path: "/" });
         }
       } catch (error) {

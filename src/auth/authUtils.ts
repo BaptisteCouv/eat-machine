@@ -2,6 +2,7 @@ import store from "@/store/index.store";
 import router from "@/router/index";
 
 export function getUserIdFromToken(token: any): string | null {
+  
   const tokenParts = token.token.split(".");
   if (tokenParts.length !== 3) {
     return null;
